@@ -51,11 +51,6 @@
                   <Insets left="90.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="اضافة ادمن">
-               <VBox.margin>
-                  <Insets left="90.0" top="10.0" />
-               </VBox.margin>
-            </Button>
          </children>
       </VBox>
    </children>
