@@ -1,36 +1,25 @@
 package com.example.store.Sales;
 
+import com.example.store.Product.Products;
 import org.bson.Document;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 public class Sales {
     private String id;
-    private String productName;
-    private double productPrice;
-    private int quantity;
-    private double total;
+    private List<Products> products;
+    private double totalPrice;
+    private LocalDate saleDate;
+    private LocalTime saleTime;
 
-    // Constructors, getters, setters, etc.
-
-    public Sales(String id, String productName, double productPrice, int quantity, double total) {
+    public Sales(String id, List<Products> products, double totalPrice, LocalDate saleDate, LocalTime saleTime) {
         this.id = id;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.quantity = quantity;
-        this.total = total;
-    }
-
-    public Sales(String productName, double productPrice, int quantity) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.quantity = quantity;
-    }
-
-    public Document toDocument() {
-        return new Document()
-                .append("productName", productName)
-                .append("ProductPrice", productPrice)
-                .append("quantity", quantity)
-                .append("total", total);
+        this.products = products;
+        this.totalPrice = totalPrice;
+        this.saleDate = saleDate;
+        this.saleTime = saleTime;
     }
 
     public String getId() {
@@ -41,35 +30,35 @@ public class Sales {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public List<Products> getProducts() {
+        return products;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProducts(List<Products> products) {
+        this.products = products;
     }
 
-    public double getProductPrice() {
-        return productPrice;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public LocalDate getSaleDate() {
+        return saleDate;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setSaleDate(LocalDate saleDate) {
+        this.saleDate = saleDate;
     }
 
-    public double getTotal() {
-        return total;
+    public LocalTime getSaleTime() {
+        return saleTime;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setSaleTime(LocalTime saleTime) {
+        this.saleTime = saleTime;
     }
 }

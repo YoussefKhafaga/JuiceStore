@@ -32,7 +32,7 @@
             <TableView fx:id="tableView" prefHeight="290.0" prefWidth="255.0">
               <columns>
                   <TableColumn fx:id="deleteColumn" prefWidth="51.0" text="حذف" />
-                  <TableColumn fx:id="quantity" prefWidth="65.0" text="الكمية" />
+                  <TableColumn fx:id="productQuantity" prefWidth="65.0" text="الكمية" />
                   <TableColumn fx:id="productPrice" prefWidth="57.0" text="السعر" />
                   <TableColumn fx:id="productName" prefWidth="161.0" text="الصنف" />
               </columns>

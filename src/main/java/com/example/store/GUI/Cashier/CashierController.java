@@ -13,8 +13,6 @@ import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -35,15 +33,15 @@ public class CashierController {
     private ScrollPane categoriesScrollPane;
     private ScrollPane productsScrollPane;
     @FXML
-    TableView<Sales> tableView;
+    TableView<Products> tableView;
     @FXML
-    TableColumn<Sales, String> productName = new TableColumn<>("الصنف");
+    TableColumn<Products, String> productName = new TableColumn<>("الصنف");
     @FXML
-    TableColumn<Sales, Double> productPrice = new TableColumn<>("السعر");
+    TableColumn<Products, Double> productPrice = new TableColumn<>("السعر");
     @FXML
-    TableColumn<Sales, Integer> quantity = new TableColumn<>("الكمية");
+    TableColumn<Products, Integer> productQuantity = new TableColumn<>("الكمية");
     @FXML
-    TableColumn<Sales, String> deleteColumn = new TableColumn<>("حذف");
+    TableColumn<Products, String> deleteColumn = new TableColumn<>("حذف");
     @FXML
     private Label totalPayment;
     @FXML
@@ -56,7 +54,7 @@ public class CashierController {
     private Label remainingLabel;
     private Double total = 0.0;
 
-    ObservableList<Sales> tableData = FXCollections.observableArrayList();
+    ObservableList<Products> tableData = FXCollections.observableArrayList();
 
 
     public void initialize() {
@@ -73,9 +71,9 @@ public class CashierController {
         // Set up event handler for key pressed events
         borderpane.setOnKeyPressed(event -> handleKeyPressed(event));
         borderpane.setOnKeyReleased(event -> handleKeyReleased(event));
-        productName.setCellValueFactory(new PropertyValueFactory<Sales, String>("productName"));
-        productPrice.setCellValueFactory(new PropertyValueFactory<Sales, Double>("productPrice"));
-        quantity.setCellValueFactory(new PropertyValueFactory<Sales, Integer>("quantity"));
+        productName.setCellValueFactory(new PropertyValueFactory<Products, String>("productName"));
+        productPrice.setCellValueFactory(new PropertyValueFactory<Products, Double>("productPrice"));
+        productQuantity.setCellValueFactory(new PropertyValueFactory<Products, Integer>("productQuantity"));
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             Button deleteButton = new Button("حذف");
             {
@@ -86,10 +84,10 @@ public class CashierController {
                     // Handle delete action (e.g., remove the selected row from the table)
                     int selectedIndex = getTableRow().getIndex();
                     // Access the item from the table view
-                    Sales selectedItem = tableView.getItems().get(selectedIndex);
+                    Products selectedItem = tableView.getItems().get(selectedIndex);
 
                     // Calculate the total amount to be subtracted
-                    double amountToRemove = selectedItem.getProductPrice() * selectedItem.getQuantity();
+                    double amountToRemove = selectedItem.getProductPrice() * selectedItem.getProductQuantity();
                     // Implement your logic for deletion here
                     total -= amountToRemove;
                     tableView.getItems().remove(selectedIndex);
@@ -117,8 +115,6 @@ public class CashierController {
             remainingLabel.setText(String.valueOf(0.0));
         });
         printButton.setOnAction(actionEvent -> {
-            //TODO print
-            //Sales sale = new Sales();
             total = 0.0;
             totalPayment.setText(String.valueOf(total));
             tableView.getItems().clear();
@@ -126,6 +122,7 @@ public class CashierController {
             tableView.getSortOrder().clear(); // Clear sorting order
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
+            printBill();
         });
     }
 
@@ -161,6 +158,7 @@ public class CashierController {
             tableView.getSortOrder().clear(); // Clear sorting order
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
+            printBill();
         }
         if (event.getText().equalsIgnoreCase("n")) {
             total = 0.0;
@@ -214,7 +212,6 @@ public class CashierController {
                 pressCategoryButton(targetButton);
             }
             else if (borderpane.getChildren().contains(productsScrollPane)){
-                System.out.println("here");
                 pressProductButton(targetButton);
             }
         }
@@ -239,35 +236,35 @@ public class CashierController {
     }
     private void pressProductButton(Button targetButton) {
         RetrieveProducts retrieveProducts = new RetrieveProducts();
-        Products product;
+        Products products;
         String buttonText = targetButton.getText();
         String productName = buttonText.replaceAll("[0-9]+", "").trim();
-        product = retrieveProducts.retrieveProductByName(productName);
-        int quantity = Integer.parseInt(showCustomInputDialog(product.getName()));
+        products = retrieveProducts.retrieveProductByName(productName);
+        int quantity = Integer.parseInt(showCustomInputDialog(products.getProductName()));
         ctrlPressed = false;
         paidTextField.requestFocus();
-        Sales sale = new Sales(product.getName(), product.getPrice(), quantity);
-        total += calculateTotal(product.getPrice(), quantity);
+        Products product = new Products(products.getProductName(), products.getProductPrice(), quantity);
+        total += calculateTotal(product.getProductPrice(), quantity);
         totalPayment.setText(String.valueOf(total));
-        checkExistingSale(sale);
+        checkExistingSale(product);
         borderpane.requestFocus();
     }
 
-    public void checkExistingSale(Sales newSale) {
-        Sales existingSale = null;
-        for (Sales sale : tableData) {
-            if (sale.getProductName().equals(newSale.getProductName())) {
-                existingSale = sale; // Corrected line
+    public void checkExistingSale(Products newProduct) {
+        Products existingProduct = null;
+        for (Products product : tableData) {
+            if (product.getProductName().equals(newProduct.getProductName())) {
+                existingProduct = product; // Corrected line
                 break;
             }
         }
 
-        if (existingSale != null) {
+        if (existingProduct != null) {
             // If the item exists, update it
-            existingSale.setQuantity(newSale.getQuantity());
+            existingProduct.setProductQuantity(newProduct.getProductQuantity());
         } else {
             // If the item doesn't exist, add a new item
-            tableData.add(newSale);
+            tableData.add(newProduct);
         }
         tableView.setItems(tableData);
         tableView.refresh();
@@ -391,7 +388,7 @@ public class CashierController {
             Button button = new Button();
             button.setId("Button" + (i+1));
             Products product = productList.get(i);
-            button.setText((i + 1) + " " + product.getName());
+            button.setText((i + 1) + " " + product.getProductName());
 
             // Add the button to the GridPane at the specified column and row
             gridPane.add(button, columnIndex, rowIndex);
@@ -444,8 +441,8 @@ public class CashierController {
 
                 // Append table content in a table format
                 contentText.setText(contentText.getText() + String.format("%-20s%-10s%-10s\n", "Product Name", "Price (جنية)", "Quantity"));
-                for (Sales sale : tableData) {
-                    contentText.setText(contentText.getText() + String.format("%-20s%-10.2f%-10d\n", sale.getProductName(), sale.getProductPrice(), sale.getQuantity()));
+                for (Products product : tableData) {
+                    contentText.setText(contentText.getText() + String.format("%-20s%-10.2f%-10d\n", product.getProductName(), product.getProductPrice(), product.getProductQuantity()));
                 }
 
                 // Append total, paid, and remaining
