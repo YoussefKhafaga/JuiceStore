@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
+   <right>
+      <VBox prefHeight="400.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="283.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../logo2.jpg" />
+               </image>
+               <VBox.margin>
+                  <Insets top="200.0" />
+               </VBox.margin>
+            </ImageView>
+            <TextField fx:id="shadowTextField">
+               <VBox.margin>
+                  <Insets left="50.0" right="50.0" top="50.0" />
+               </VBox.margin>
+            </TextField>
+         </children>
+      </VBox>
+   </right>
+   <left>
+      <VBox prefHeight="491.0" prefWidth="387.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tableView" prefHeight="290.0" prefWidth="255.0">
+              <columns>
+                  <TableColumn fx:id="deleteColumn" prefWidth="51.0" text="حذف" />
+                  <TableColumn fx:id="quantity" prefWidth="65.0" text="الكمية" />
+                  <TableColumn fx:id="productPrice" prefWidth="57.0" text="السعر" />
+                  <TableColumn fx:id="productName" prefWidth="161.0" text="الصنف" />
+              </columns>
+            </TableView>
+            <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="263.0">
+               <children>
+                  <Label fx:id="totalPayment" textFill="RED" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label text="السعر الاجمالي" textAlignment="CENTER" wrapText="true">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="263.0">
+               <children>
+                  <TextField fx:id="paidTextField">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="المدفوع" wrapText="true">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="356.0" prefHeight="61.0" prefWidth="263.0">
+               <children>
+                  <Label fx:id="remainingLabel" textFill="GREEN" wrapText="true">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label text="الباقي" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets right="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="417.0" prefHeight="61.0" prefWidth="263.0">
+               <children>
+                  <Button fx:id="printButton" mnemonicParsing="false" text="طباعة">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="newOrderButton" mnemonicParsing="false" text="جديد">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children></VBox>
+   </left>
+</BorderPane>
