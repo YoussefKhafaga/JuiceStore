@@ -15,16 +15,16 @@
       </ImageView>
       <VBox layoutX="357.0" layoutY="25.0" prefHeight="332.0" prefWidth="243.0">
          <children>
-            <HBox prefHeight="49.0" prefWidth="243.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="243.0">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="109.0">
+                  <TextField fx:id="userNameTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
                      <HBox.margin>
-                        <Insets left="20.0" top="35.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
                   </TextField>
-                  <Label text="اسم المستخدم">
+                  <Label alignment="CENTER_RIGHT" text="اسم المستخدم">
                      <HBox.margin>
-                        <Insets left="10.0" top="35.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -32,23 +32,27 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="74.0" prefWidth="243.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="243.0">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="109.0">
+                  <PasswordField fx:id="passwordTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
                      <HBox.margin>
-                        <Insets left="20.0" top="35.0" />
+                        <Insets right="45.0" />
                      </HBox.margin>
-                  </TextField>
-                  <Label text="كلمة السر">
+                  </PasswordField>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="كلمة السر">
                      <HBox.margin>
-                        <Insets left="10.0" top="35.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="تسجيل الدخول">
+            <ToggleButton fx:id="showPasswordToggle" mnemonicParsing="false" text="اظهار كلمة المرور">
                <VBox.margin>
-                  <Insets left="90.0" top="10.0" />
+                  <Insets left="80.0" top="10.0" />
+               </VBox.margin></ToggleButton>
+            <Button fx:id="LoginButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="تسجيل الدخول">
+               <VBox.margin>
+                  <Insets left="80.0" top="10.0" />
                </VBox.margin>
             </Button>
          </children>

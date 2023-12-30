@@ -8,25 +8,33 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class Sales {
-    private String id;
+    private Integer id;
     private List<Products> products;
     private double totalPrice;
+    private double remaining;
+    private  double paid;
+
     private LocalDate saleDate;
     private LocalTime saleTime;
 
-    public Sales(String id, List<Products> products, double totalPrice, LocalDate saleDate, LocalTime saleTime) {
+    public Sales(Integer id, List<Products> products, double totalPrice, double paid, double remaining, LocalDate saleDate, LocalTime saleTime) {
         this.id = id;
         this.products = products;
         this.totalPrice = totalPrice;
+        this.paid = paid;
+        this.remaining = remaining;
         this.saleDate = saleDate;
         this.saleTime = saleTime;
     }
 
-    public String getId() {
+    public Sales() {
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -60,5 +68,21 @@ public class Sales {
 
     public void setSaleTime(LocalTime saleTime) {
         this.saleTime = saleTime;
+    }
+
+    public double getRemaining() {
+        return remaining;
+    }
+
+    public void setRemaining(double remaining) {
+        this.remaining = remaining;
+    }
+
+    public double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(double paid) {
+        this.paid = paid;
     }
 }

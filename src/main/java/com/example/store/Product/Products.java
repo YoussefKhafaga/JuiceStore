@@ -3,12 +3,12 @@ package com.example.store.Product;
 import org.bson.Document;
 
 public class Products {
-    private String id;
-    private String productName;
-    private Double productPrice;
-    private String category;
-    private String description;
-    private Integer productQuantity;
+    private String id = "";
+    private String productName = "";
+    private Double productPrice = 0.0;
+    private String category = "";
+    private String description = "";
+    private Integer productQuantity = 0;
 
     // Constructors, getters, setters, etc.
 
@@ -37,8 +37,18 @@ public class Products {
                 .append("productName", productName)
                 .append("productPrice", productPrice)
                 .append("category", category)
+                .append("quantity", productQuantity)
                 .append("description", description);
     }
+
+    public static Products fromDocument(Document document) {
+        String productName = document.getString("productName");
+        double productPrice = document.getDouble("productPrice");
+        int productQuantity = document.getInteger("productQuantity"); // Corrected field name
+
+        return new Products(productName, productPrice, productQuantity);
+    }
+
 
     public String getCategory() {
         return category;

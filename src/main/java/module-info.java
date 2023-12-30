@@ -38,4 +38,5 @@ module com.example.store {
 
     opens com.example.store.GUI.Categories;
     exports com.example.store.GUI.Categories to javafx.fxml;
+
 }
