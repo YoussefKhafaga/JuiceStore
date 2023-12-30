@@ -19,21 +19,6 @@
       <HBox layoutX="354.0" prefHeight="84.0" prefWidth="246.0">
          <children>
             <VBox prefHeight="84.0" prefWidth="211.0">
-               <children>
-                  <Label text="البحث عن المنتج">
-                     <VBox.margin>
-                        <Insets left="60.0" top="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="searchBar" prefHeight="25.0" prefWidth="220.0">
-                     <VBox.margin>
-                        <Insets top="3.0" />
-                     </VBox.margin>
-                  </TextField>
-               </children>
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -50,43 +35,84 @@
                   <Insets left="90.0" top="10.0" />
                </VBox.margin>
                 </Label>
-                <Label prefHeight="21.0" prefWidth="190.0" text="تعديل اسم المنتج" textAlignment="RIGHT">
-                    <VBox.margin>
-                        <Insets left="120.0" top="50.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="15.0" />
-                    </font></Label>
-                <TextField fx:id="editItemName" prefHeight="25.0" prefWidth="160.0">
-                    <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="3.0" />
-                    </VBox.margin>
-                </TextField>
-                <Label text="تعديل سعر المنتج" textAlignment="RIGHT">
-                    <VBox.margin>
-                        <Insets left="120.0" top="10.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="15.0" />
-                    </font></Label>
-                <TextField fx:id="editItemPrice" prefHeight="25.0" prefWidth="80.0">
-                    <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="3.0" />
-                    </VBox.margin>
-                </TextField>
-                <Label prefHeight="21.0" prefWidth="130.0" text="تعديل وصف المنتج" textAlignment="RIGHT">
-                    <VBox.margin>
-                        <Insets left="110.0" top="10.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="15.0" />
-                    </font></Label>
-                <TextArea fx:id="editItemDescription" prefHeight="50.0" prefWidth="205.0">
-                    <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="3.0" />
-                    </VBox.margin>
-                </TextArea>
-                <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="245.0">
+               <children>
+                  <ComboBox fx:id="categoryCombobox" prefWidth="150.0" promptText="اختر نوع المنتج" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="245.0">
+               <children>
+                  <ComboBox fx:id="productsCombobox" prefWidth="150.0" promptText="اختر المنتج">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="245.0">
+               <children>
+                  <VBox prefHeight="79.0" prefWidth="246.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="تعديل اسم المنتج" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="editItemName">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin></TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="57.0" prefWidth="245.0">
+               <children>
+                  <VBox prefHeight="68.0" prefWidth="251.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="تعديل سعر المنتج" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="editItemPrice">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin></TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="56.0" prefWidth="245.0">
+               <children>
+                  <VBox prefHeight="81.0" prefWidth="247.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="تعديل نوع المنتج" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ComboBox fx:id="newCombobox" prefWidth="150.0" promptText="اختر النوع الجديد" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                     <children>
                         <Button fx:id="editItemBackButton" mnemonicParsing="false" text="الرجوع">
                             <HBox.margin>
@@ -105,11 +131,8 @@
                             </HBox.margin>
                         </Button>
                     </children>
-                    <padding>
-                        <Insets left="40.0" top="10.0" />
-                    </padding>
                     <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                     </VBox.margin>
                 </HBox>
             </children>
