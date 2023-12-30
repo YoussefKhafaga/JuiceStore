@@ -208,6 +208,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Categories");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 

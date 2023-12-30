@@ -1,7 +1,5 @@
 package com.example.store.GUI.Categories;
 
-import com.example.store.Product.AddProductDocument;
-import com.example.store.Product.RetrieveProducts;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import javafx.fxml.FXML;

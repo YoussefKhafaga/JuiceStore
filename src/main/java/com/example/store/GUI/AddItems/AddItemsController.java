@@ -1,9 +1,7 @@
 package com.example.store.GUI.AddItems;
 
-import com.example.store.GUI.Menu.MenuController;
+import com.example.store.GUI.Categories.AddCategories;
 import com.example.store.Product.AddProductDocument;
-import com.example.store.Product.Products;
-import com.example.store.Product.RetrieveProducts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -34,7 +32,11 @@ public class AddItemsController {
     private ComboBox<String> itemCategory;
 
     public void initialize(){
-        populateCategories();
+        AddCategories addCategories = new AddCategories();
+        List<String> categories;
+        categories = addCategories.getAllCategories();
+        populateCategories(categories);
+
         addItem.setOnAction(actionEvent -> {
             handleSubmitButton();
         });
@@ -133,11 +135,7 @@ public class AddItemsController {
             e.printStackTrace(); // Handle the exception appropriately
         }
     }
-    private void populateCategories() {
-        // Assuming you have a method to retrieve categories from the database
-        RetrieveProducts retrieveProducts = new RetrieveProducts();
-        List<String> categories = retrieveProducts.retrieveCategories();
-
+    private void populateCategories(List<String> categories) {
         // Clear existing items and add new ones
         itemCategory.getItems().clear();
         itemCategory.getItems().addAll(categories);

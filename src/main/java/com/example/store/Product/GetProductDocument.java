@@ -9,7 +9,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetrieveProducts {
+public class GetProductDocument {
     public Products retrieveProductByName(String targetName) {
         // Connect to the MongoDB server (adjust connection string accordingly)
         try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
@@ -49,7 +49,7 @@ public class RetrieveProducts {
             MongoDatabase database = mongoClient.getDatabase("KhanMariaStore");
 
             // Connect to the "products" collection
-            MongoCollection<Document> collection = database.getCollection("Products");
+            MongoCollection<Document> collection = database.getCollection("Categories");
 
             // Use the distinct operation to get unique categories
             List<String> distinctCategories = collection.distinct("category", String.class).into(new ArrayList<>());

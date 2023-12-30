@@ -4,6 +4,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
@@ -28,26 +29,35 @@ public class AddAdminDocument {
             String adminUsername = "Admin";
             String adminPassword = "KMSHardPassword";
 
-            // Generate a random salt for the admin
-            String adminSalt = generateSalt();
+            // Check if an admin with the same username already exists
+            Document existingAdmin = adminsCollection.find(Filters.eq("username", adminUsername)).first();
 
-            // Combine password with salt and hash using SHA-256
-            String hashedAdminPassword = hashPassword(adminPassword, adminSalt);
+            if (existingAdmin != null) {
+                // Admin with the same username already exists, handle accordingly
+                System.out.println("Admin with username " + adminUsername + " already exists!");
+            } else {
+                // Generate a random salt for the admin
+                String adminSalt = generateSalt();
 
-            // Insert the document into the collection
-            Document newAdminDocument = new Document()
-                    .append("username", adminUsername)
-                    .append("password", hashedAdminPassword)
-                    .append("salt", adminSalt);
+                // Combine password with salt and hash using SHA-256
+                String hashedAdminPassword = hashPassword(adminPassword, adminSalt);
 
-            adminsCollection.insertOne(newAdminDocument);
+                // Insert the document into the collection
+                Document newAdminDocument = new Document()
+                        .append("username", adminUsername)
+                        .append("password", hashedAdminPassword)
+                        .append("salt", adminSalt);
 
-            System.out.println("Admin document added successfully!");
+                adminsCollection.insertOne(newAdminDocument);
+
+                System.out.println("Admin document added successfully!");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private static String generateSalt() {
         try {

@@ -2,15 +2,19 @@ package com.example.store.GUI.Cashier;
 
 import com.example.store.GUI.Categories.AddCategories;
 import com.example.store.Product.Products;
-import com.example.store.Product.RetrieveProducts;
+import com.example.store.Product.GetProductDocument;
+import com.example.store.Sales.AddSalesDocument;
+import com.example.store.Sales.GetSalesDocument;
 import com.example.store.Sales.Sales;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -19,9 +23,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 public class CashierController {
     @FXML
@@ -53,12 +62,18 @@ public class CashierController {
     @FXML
     private Label remainingLabel;
     private Double total = 0.0;
-
+    private Double paid = 0.0;
+    @FXML
+    private Button BackButton;
+    @FXML
+    private Button enterNumber;
+    @FXML
+    private Button enterPaid;
     ObservableList<Products> tableData = FXCollections.observableArrayList();
-
+    List<Products> saleProducts = new ArrayList<>();
 
     public void initialize() {
-        RetrieveProducts retrieveProducts = new RetrieveProducts();
+        GetProductDocument getProductDocument = new GetProductDocument();
         AddCategories addCategories = new AddCategories();
         // Load an image for the icon
         //Image iconImage = new Image(getClass().getResourceAsStream("resources/com/example/store/logo.jpg"));
@@ -74,6 +89,35 @@ public class CashierController {
         productName.setCellValueFactory(new PropertyValueFactory<Products, String>("productName"));
         productPrice.setCellValueFactory(new PropertyValueFactory<Products, Double>("productPrice"));
         productQuantity.setCellValueFactory(new PropertyValueFactory<Products, Integer>("productQuantity"));
+        enterNumber.setOnAction(actionEvent -> {
+            // Get the content of the TextField and process it
+            String enteredText = shadowTextField.getText();
+            Button targetButton = getButtonForDigit(Integer.parseInt(enteredText));
+            // Clear the TextField
+            shadowTextField.clear();
+            if (targetButton != null) {
+                if(borderpane.getChildren().contains(categoriesScrollPane)) {
+                    pressCategoryButton(targetButton);
+                }
+                else if (borderpane.getChildren().contains(productsScrollPane)){
+                    pressProductButton(targetButton);
+                }
+            }
+            else {
+                // Show an alert box for the error
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Button not found", ButtonType.OK);
+                alert.showAndWait();
+            }
+        });
+        BackButton.setOnAction(actionEvent -> {
+            handleBackButton();
+        });
+        enterPaid.setOnAction(actionEvent -> {
+            paid = Double.parseDouble(paidTextField.getText());
+            Double remaining = calculateReamining(Double.parseDouble(paidTextField.getText()));
+            remainingLabel.setText(String.valueOf(remaining));
+            borderpane.requestFocus();
+        });
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             Button deleteButton = new Button("حذف");
             {
@@ -113,16 +157,23 @@ public class CashierController {
             tableView.getSortOrder().clear(); // Clear sorting order
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
+            saleProducts.clear();
+            paidTextField.clear();
         });
         printButton.setOnAction(actionEvent -> {
+            Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
+                    Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
             total = 0.0;
             totalPayment.setText(String.valueOf(total));
             tableView.getItems().clear();
             tableView.getSelectionModel().clearSelection();
-            tableView.getSortOrder().clear(); // Clear sorting order
+            tableView.getSortOrder().clear();
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
-            printBill();
+            AddSalesDocument addSalesDocument = new AddSalesDocument();
+            addSalesDocument.AddSale(sale);
+            //printBill();
+            saleProducts.clear();
         });
     }
 
@@ -150,15 +201,19 @@ public class CashierController {
             handleAltEnterPressed();
         }
         if (event.getText().equalsIgnoreCase("p")) {
-            //TODO connect to printer and print bill
+            Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
+                    Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
             total = 0.0;
             totalPayment.setText(String.valueOf(total));
             tableView.getItems().clear();
             tableView.getSelectionModel().clearSelection();
-            tableView.getSortOrder().clear(); // Clear sorting order
+            tableView.getSortOrder().clear();
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
-            printBill();
+            AddSalesDocument addSalesDocument = new AddSalesDocument();
+            addSalesDocument.AddSale(sale);
+            //printBill();
+            saleProducts.clear();
         }
         if (event.getText().equalsIgnoreCase("n")) {
             total = 0.0;
@@ -168,6 +223,7 @@ public class CashierController {
             tableView.getSortOrder().clear(); // Clear sorting order
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
+            saleProducts.clear();
         }
     }
 
@@ -189,6 +245,7 @@ public class CashierController {
 
     // Add this method to handle Alt + Enter
     private void handleAltEnterPressed() {
+        paid = Double.parseDouble(paidTextField.getText());
         Double remaining = calculateReamining(Double.parseDouble(paidTextField.getText()));
         remainingLabel.setText(String.valueOf(remaining));
         borderpane.requestFocus();
@@ -235,15 +292,16 @@ public class CashierController {
         }
     }
     private void pressProductButton(Button targetButton) {
-        RetrieveProducts retrieveProducts = new RetrieveProducts();
+        GetProductDocument getProductDocument = new GetProductDocument();
         Products products;
         String buttonText = targetButton.getText();
         String productName = buttonText.replaceAll("[0-9]+", "").trim();
-        products = retrieveProducts.retrieveProductByName(productName);
+        products = getProductDocument.retrieveProductByName(productName);
         int quantity = Integer.parseInt(showCustomInputDialog(products.getProductName()));
         ctrlPressed = false;
         paidTextField.requestFocus();
         Products product = new Products(products.getProductName(), products.getProductPrice(), quantity);
+        saleProducts.add(product);
         total += calculateTotal(product.getProductPrice(), quantity);
         totalPayment.setText(String.valueOf(total));
         checkExistingSale(product);
@@ -323,13 +381,12 @@ public class CashierController {
         return dialog.showAndWait().orElse(null);
     }
     private void pressCategoryButton(Button targetButton) {
-        RetrieveProducts retrieveProducts = new RetrieveProducts();
+        GetProductDocument getProductDocument = new GetProductDocument();
         List<Products> productsList;
         ScrollPane scrollPane;
         String buttonText = targetButton.getText();
-        System.out.println(buttonText);
         String category = buttonText.replaceAll("[0-9]+", "").trim();
-        productsList = retrieveProducts.retrieveProductsByCategory(category);
+        productsList = getProductDocument.retrieveProductsByCategory(category);
         scrollPane = createCategoryProducts(productsList, productsList.size(), 5);
         productsScrollPane = scrollPane;
         borderpane.setCenter(productsScrollPane);
@@ -460,5 +517,28 @@ public class CashierController {
             e.printStackTrace();
         }
     }
+    public int generateUniqueId() {
+        GetSalesDocument getSalesDocument = new GetSalesDocument();
+        int id = getSalesDocument.getLatestSaleIdFromDB();
+        return id;
+    }
 
+    public void handleBackButton(){
+        try {
+            // Load the FXML file for the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            // Get the current stage
+            Stage currentStage = (Stage) borderpane.getScene().getWindow();
+
+            // Set the new scene on the current stage
+            currentStage.setScene(scene);
+            currentStage.setTitle("Menu");
+            currentStage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
 }
