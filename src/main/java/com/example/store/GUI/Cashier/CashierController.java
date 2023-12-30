@@ -1,5 +1,14 @@
 package com.example.store.GUI.Cashier;
 
+import javafx.print.PageLayout;
+import javafx.print.PrinterJob;
+import javafx.scene.text.Text;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.text.Text;
 import com.example.store.GUI.Categories.AddCategories;
 import com.example.store.Product.Products;
 import com.example.store.Product.GetProductDocument;
@@ -163,6 +172,7 @@ public class CashierController {
         printButton.setOnAction(actionEvent -> {
             Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
                     Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
+            printBill();
             total = 0.0;
             totalPayment.setText(String.valueOf(total));
             tableView.getItems().clear();
@@ -172,7 +182,6 @@ public class CashierController {
             remainingLabel.setText(String.valueOf(0.0));
             AddSalesDocument addSalesDocument = new AddSalesDocument();
             addSalesDocument.AddSale(sale);
-            //printBill();
             saleProducts.clear();
         });
     }
@@ -203,6 +212,7 @@ public class CashierController {
         if (event.getText().equalsIgnoreCase("p")) {
             Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
                     Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
+            printBill();
             total = 0.0;
             totalPayment.setText(String.valueOf(total));
             tableView.getItems().clear();
@@ -212,7 +222,6 @@ public class CashierController {
             remainingLabel.setText(String.valueOf(0.0));
             AddSalesDocument addSalesDocument = new AddSalesDocument();
             addSalesDocument.AddSale(sale);
-            //printBill();
             saleProducts.clear();
         }
         if (event.getText().equalsIgnoreCase("n")) {
@@ -471,7 +480,7 @@ public class CashierController {
         return scrollPane;
     }
     public void printBill() {
-        String printerName = "YourPrinterName";
+        String printerName = "XP-90 (copy 1)";
         Printer printer = Printer.getAllPrinters().stream()
                 .filter(p -> p.getName().equals(printerName))
                 .findFirst()
@@ -487,6 +496,11 @@ public class CashierController {
             PrinterJob printerJob = PrinterJob.createPrinterJob(printer);
 
             if (printerJob != null && printerJob.showPrintDialog(tableView.getScene().getWindow())) {
+                // Adjust page layout and size settings
+                PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
+                double printableWidth = pageLayout.getPrintableWidth();
+                double printableHeight = pageLayout.getPrintableHeight();
+
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String dateTimeString = now.format(formatter);
@@ -494,7 +508,11 @@ public class CashierController {
                 String header = "Date/Time: " + dateTimeString + "\n\n";
 
                 // Create a Text node for content
-                Text contentText = new Text(header);
+                Text contentText = new Text();
+                contentText.setWrappingWidth(printableWidth);
+
+                // Set header text
+                contentText.setText(header);
 
                 // Append table content in a table format
                 contentText.setText(contentText.getText() + String.format("%-20s%-10s%-10s\n", "Product Name", "Price (جنية)", "Quantity"));
@@ -507,16 +525,26 @@ public class CashierController {
                 contentText.setText(contentText.getText() + "Paid: " + totalPayment.getText() + " جنية\n");
                 contentText.setText(contentText.getText() + "Remaining: " + remainingLabel.getText() + " جنية\n");
 
-                // Print the content
-                if (printerJob.printPage(contentText)) {
+                // Check for content overflow
+                double contentHeight = contentText.getBoundsInParent().getHeight();
+                if (contentHeight > printableHeight) {
                     printerJob.endJob();
+                    printerJob = PrinterJob.createPrinterJob(printer);
+                    // Set header text for the new page
+                    contentText.setText(header);
                 }
+
+                // Print the content
+                printerJob.printPage(contentText);
+                printerJob.endJob();
+                System.out.println("printed");
             }
         } catch (Exception e) {
             // Handle the exception (e.g., log, display an error message)
             e.printStackTrace();
         }
     }
+
     public int generateUniqueId() {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
         int id = getSalesDocument.getLatestSaleIdFromDB();

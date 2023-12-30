@@ -209,7 +209,7 @@ public class MenuController {
             currentStage.setScene(scene);
             currentStage.setTitle("Categories");
             currentStage.setResizable(false);
-            //currentStage.setFullScreen(true);
+            currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {

@@ -12,6 +12,14 @@ public class Products {
 
     // Constructors, getters, setters, etc.
 
+
+    public Products(String productName) {
+        this.productName = productName;
+    }
+
+    public Products() {
+    }
+
     public Products(String id, String productName, Double productPrice, String category) {
         this.id = id;
         this.productName = productName;
