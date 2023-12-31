@@ -1,23 +1,11 @@
 package com.example.store.GUI.Cashier;
 
-import javafx.scene.layout.FlowPane;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Font;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.RowConstraints;
-import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.print.PageLayout;
 import javafx.print.PrinterJob;
 import javafx.scene.text.Text;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.print.Printer;
-import javafx.print.PrinterJob;
-import javafx.scene.text.Text;
 import com.example.store.GUI.Categories.AddCategories;
 import com.example.store.Product.Products;
 import com.example.store.Product.GetProductDocument;
@@ -29,8 +17,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,9 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -91,12 +75,8 @@ public class CashierController {
     List<Products> saleProducts = new ArrayList<>();
 
     public void initialize() {
-        GetProductDocument getProductDocument = new GetProductDocument();
+        //GetProductDocument getProductDocument = new GetProductDocument();
         AddCategories addCategories = new AddCategories();
-        // Load an image for the icon
-        //Image iconImage = new Image(getClass().getResourceAsStream("resources/com/example/store/logo.jpg"));
-        // Create an ImageView with the icon image
-        //ImageView iconImageView = new ImageView(iconImage);
         List<String> categoriesList;
         categoriesList = addCategories.getAllCategories();
         categoriesScrollPane = createCategories(categoriesList, categoriesList.size(), 5);
