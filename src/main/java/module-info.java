@@ -1,10 +1,10 @@
 module com.example.store {
-    requires javafx.controls;
-    requires javafx.fxml;
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.bson;
     requires org.mongodb.driver.core;
-    requires javafx.graphics;
+    requires javafx.fxml;
+    //requires javafx.graphics;
+    requires javafx.controls;
 
     opens com.example.store to javafx.fxml;
     exports com.example.store;

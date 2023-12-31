@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../logo2.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="orderId">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="رقم الاوردر" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="DateAndTime">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="التاريخ والوقت" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TableView prefHeight="100.0" prefWidth="602.0">
+              <columns>
+                <TableColumn prefWidth="136.0" text="الكمية" />
+                <TableColumn prefWidth="94.0" text="سعر المنتج" />
+                  <TableColumn prefWidth="342.0" text="اسم المنتج" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="totalPrice">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="السعر الاجمالي" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="paid">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="المدفوع" />
+         </children>
+      </HBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="33.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="remaining">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Label text="الباقي" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

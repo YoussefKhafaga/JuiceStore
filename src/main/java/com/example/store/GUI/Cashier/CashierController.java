@@ -1,5 +1,14 @@
 package com.example.store.GUI.Cashier;
 
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Font;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
+import javafx.geometry.VPos;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.print.PageLayout;
 import javafx.print.PrinterJob;
 import javafx.scene.text.Text;
@@ -494,8 +503,9 @@ public class CashierController {
 
         try {
             PrinterJob printerJob = PrinterJob.createPrinterJob(printer);
+            printerJob.getJobSettings().setCopies(1);
 
-            if (printerJob != null && printerJob.showPrintDialog(tableView.getScene().getWindow())) {
+            if (printerJob != null) {
                 // Adjust page layout and size settings
                 PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
                 double printableWidth = pageLayout.getPrintableWidth();
@@ -505,25 +515,25 @@ public class CashierController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String dateTimeString = now.format(formatter);
 
-                String header = "Date/Time: " + dateTimeString + "\n\n";
+                String header = dateTimeString + "\n\n";
 
                 // Create a Text node for content
                 Text contentText = new Text();
                 contentText.setWrappingWidth(printableWidth);
 
+                contentText.setFont(Font.font(6));
                 // Set header text
                 contentText.setText(header);
 
                 // Append table content in a table format
-                contentText.setText(contentText.getText() + String.format("%-20s%-10s%-10s\n", "Product Name", "Price (جنية)", "Quantity"));
                 for (Products product : tableData) {
-                    contentText.setText(contentText.getText() + String.format("%-20s%-10.2f%-10d\n", product.getProductName(), product.getProductPrice(), product.getProductQuantity()));
+                    contentText.setText(contentText.getText() + String.format("%20s %10.2f x %10d\n", product.getProductName(), product.getProductPrice(), product.getProductQuantity()));
                 }
 
                 // Append total, paid, and remaining
-                contentText.setText(contentText.getText() + "\nTotal: " + total + " جنية\n");
-                contentText.setText(contentText.getText() + "Paid: " + totalPayment.getText() + " جنية\n");
-                contentText.setText(contentText.getText() + "Remaining: " + remainingLabel.getText() + " جنية\n");
+                contentText.setText(contentText.getText() + "\nالاجمالي: " + total + " جنية\n");
+                contentText.setText(contentText.getText() + "المدفوع: " + paid + " جنية\n");
+                contentText.setText(contentText.getText() + "الباقي: " + remainingLabel.getText() + " جنية\n");
 
                 // Check for content overflow
                 double contentHeight = contentText.getBoundsInParent().getHeight();
@@ -537,13 +547,13 @@ public class CashierController {
                 // Print the content
                 printerJob.printPage(contentText);
                 printerJob.endJob();
-                System.out.println("printed");
             }
         } catch (Exception e) {
             // Handle the exception (e.g., log, display an error message)
             e.printStackTrace();
         }
     }
+
 
     public int generateUniqueId() {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
