@@ -39,4 +39,10 @@ module com.example.store {
     opens com.example.store.GUI.Categories;
     exports com.example.store.GUI.Categories to javafx.fxml;
 
+    opens com.example.store.GUI.Purchases;
+    exports com.example.store.GUI.Purchases to javafx.fxml;
+
+    opens com.example.store.GUI.Returns;
+    exports com.example.store.GUI.Returns to javafx.fxml;
+
 }

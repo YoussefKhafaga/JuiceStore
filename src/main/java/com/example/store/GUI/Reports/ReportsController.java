@@ -108,6 +108,7 @@ public class ReportsController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Menu");
+            currentStage.setResizable(false);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {

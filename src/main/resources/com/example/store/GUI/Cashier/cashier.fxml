@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
    <right>
-      <VBox prefHeight="400.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="404.0" prefWidth="174.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="283.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -134,4 +134,12 @@
             </HBox>
          </children></VBox>
    </left>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="75.0" prefWidth="683.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="Returns" mnemonicParsing="false" text="مرتجعات" />
+            <Button fx:id="Purchases" mnemonicParsing="false" text="مشتريات" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

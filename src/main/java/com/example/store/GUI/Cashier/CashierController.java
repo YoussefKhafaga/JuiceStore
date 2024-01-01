@@ -1,5 +1,6 @@
 package com.example.store.GUI.Cashier;
 
+import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.layout.GridPane;
 import javafx.print.PageLayout;
@@ -73,8 +74,18 @@ public class CashierController {
     private Button enterPaid;
     ObservableList<Products> tableData = FXCollections.observableArrayList();
     List<Products> saleProducts = new ArrayList<>();
+    @FXML
+    private Button Purchases;
+    @FXML
+    private Button Returns;
 
     public void initialize() {
+        Returns.setOnAction(actionEvent -> {
+            handleReturnsView();
+        });
+        Purchases.setOnAction(actionEvent -> {
+            handlePurchasesView();
+        });
         //GetProductDocument getProductDocument = new GetProductDocument();
         AddCategories addCategories = new AddCategories();
         List<String> categoriesList;
@@ -444,6 +455,7 @@ public class CashierController {
             button.setId("Button" + (i+1));
             Products product = productList.get(i);
             button.setText((i + 1) + " " + product.getProductName());
+            button.setOnAction(actionEvent -> pressProductButton(button));
 
             // Add the button to the GridPane at the specified column and row
             gridPane.add(button, columnIndex, rowIndex);
@@ -469,7 +481,7 @@ public class CashierController {
         return scrollPane;
     }
     public void printBill() {
-        String printerName = "XP-90 (copy 1)";
+        String printerName = "XP-80C";
         Printer printer = Printer.getAllPrinters().stream()
                 .filter(p -> p.getName().equals(printerName))
                 .findFirst()
@@ -483,7 +495,7 @@ public class CashierController {
 
         try {
             PrinterJob printerJob = PrinterJob.createPrinterJob(printer);
-            printerJob.getJobSettings().setCopies(1);
+            printerJob.getJobSettings().setCopies(2);
 
             if (printerJob != null) {
                 // Adjust page layout and size settings
@@ -495,19 +507,31 @@ public class CashierController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String dateTimeString = now.format(formatter);
 
-                String header = dateTimeString + "\n\n";
+                // Your header information
+                String dump = "\n";
+                String name = "محلات خان ماريا";
+                String address = "جناكليز شارع ابو قير";
+                String id = String.valueOf(generateUniqueId());
+
+                String header =  dump + name + "\n" +
+                        address + "\n" +
+                        "رقم العملية " + id + "\n" +
+                        dateTimeString + "\n";
+                System.out.println(header);
 
                 // Create a Text node for content
                 Text contentText = new Text();
                 contentText.setWrappingWidth(printableWidth);
-
-                contentText.setFont(Font.font(6));
-                // Set header text
+                contentText.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+                contentText.setFont(Font.font(10));
                 contentText.setText(header);
 
                 // Append table content in a table format
                 for (Products product : tableData) {
-                    contentText.setText(contentText.getText() + String.format("%20s %10.2f x %10d\n", product.getProductName(), product.getProductPrice(), product.getProductQuantity()));
+                    contentText.setText(contentText.getText() +
+                            String.format("  %d " + "%s " + "%.2f = %.2f\n",
+                                    product.getProductQuantity(), product.getProductName()
+                                    , product.getProductPrice(), product.getProductPrice() * product.getProductQuantity()));
                 }
 
                 // Append total, paid, and remaining
@@ -516,16 +540,17 @@ public class CashierController {
                 contentText.setText(contentText.getText() + "الباقي: " + remainingLabel.getText() + " جنية\n");
 
                 // Check for content overflow
-                double contentHeight = contentText.getBoundsInParent().getHeight();
+                /*double contentHeight = contentText.getBoundsInParent().getHeight();
                 if (contentHeight > printableHeight) {
                     printerJob.endJob();
                     printerJob = PrinterJob.createPrinterJob(printer);
                     // Set header text for the new page
                     contentText.setText(header);
-                }
+                }*/
 
                 // Print the content
-                printerJob.printPage(contentText);
+                Group root = new Group(contentText);
+                printerJob.printPage(root);
                 printerJob.endJob();
             }
         } catch (Exception e) {
@@ -533,7 +558,6 @@ public class CashierController {
             e.printStackTrace();
         }
     }
-
 
     public int generateUniqueId() {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
@@ -553,6 +577,49 @@ public class CashierController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Menu");
+            currentStage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+    public void handlePurchasesView(){
+        try {
+            // Load the FXML file for the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add("/styles.css");
+
+            // Get the current stage
+            Stage currentStage = (Stage) borderpane.getScene().getWindow();
+
+            // Set the new scene on the current stage
+            currentStage.setScene(scene);
+            currentStage.setTitle("المشتريات");
+            currentStage.setResizable(false);
+            //currentStage.setFullScreen(true);
+            currentStage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+    public void handleReturnsView(){
+        try {
+            // Load the FXML file for the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Returns/returns.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add("/styles.css");
+
+            // Get the current stage
+            Stage currentStage = (Stage) borderpane.getScene().getWindow();
+
+            // Set the new scene on the current stage
+            currentStage.setScene(scene);
+            currentStage.setTitle("المرتجعات");
+            currentStage.setResizable(false);
+            //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {

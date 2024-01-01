@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorpane" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Returns.ReturnsController">
+   <children>
+      <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo2.jpg" />
+         </image>
+      </ImageView>
+      <VBox alignment="TOP_CENTER" layoutX="357.0" prefHeight="357.0" prefWidth="244.0">
+         <children>
+            <Label text="اختر تاريخ العملية">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Label>
+            <DatePicker fx:id="DateSelector">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </DatePicker>
+            <Label text="ادخل رقم العملية">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="saleId" maxWidth="174.0" prefHeight="25.0" prefWidth="80.0">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </TextField>
+            <ScrollPane fx:id="scrollablePane" prefHeight="133.0" prefWidth="244.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع" />
+                  <Button fx:id="DeleteSaleButton" mnemonicParsing="false" text="حذف العملية" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

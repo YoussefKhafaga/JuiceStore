@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.bson.Document;
-import org.bson.internal.BsonUtil;
 
 import static com.mongodb.client.model.Filters.eq;
 import java.io.IOException;
@@ -170,6 +169,7 @@ public class editProductController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("اضافة المنتج");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 

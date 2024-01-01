@@ -17,7 +17,7 @@
             <Button fx:id="addProducts" layoutX="62.0" layoutY="154.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="اضافة او تعديل منتج" />
             <Button fx:id="reports" layoutX="60.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="التقارير" />
             <Button fx:id="logOut" layoutX="62.0" layoutY="280.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="تسجيل الخروج" />
-            <Button fx:id="CategoriesButton" layoutX="62.0" layoutY="236.0" mnemonicParsing="false" prefWidth="123.0" text="المصنفات" />
+            <Button fx:id="CategoriesButton" layoutX="62.0" layoutY="236.0" mnemonicParsing="false" prefWidth="123.0" text="الاصناف" />
          </children>
       </AnchorPane>
       <ImageView fitHeight="422.0" fitWidth="357.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">

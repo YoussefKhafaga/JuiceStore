@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -106,6 +105,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("LogIn");
+            currentStage.setResizable(false);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {
@@ -125,6 +125,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Add Products");
+            currentStage.setResizable(false);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {
@@ -145,6 +146,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Cashier");
+            currentStage.setResizable(true);
             currentStage.setMaximized(true);
             currentStage.centerOnScreen();
 
@@ -166,6 +168,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Reports");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
@@ -187,6 +190,7 @@ public class MenuController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Menu");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
@@ -209,7 +213,6 @@ public class MenuController {
             currentStage.setScene(scene);
             currentStage.setTitle("Categories");
             currentStage.setResizable(false);
-            currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
         } catch (IOException e) {

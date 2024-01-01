@@ -5,9 +5,7 @@ import com.mongodb.client.*;
 
 import static com.mongodb.client.model.Accumulators.sum;
 import static com.mongodb.client.model.Aggregates.*;
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.gte;
-import static com.mongodb.client.model.Filters.lt;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -18,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.descending;
 
@@ -79,14 +78,12 @@ public class GetSalesDocument {
             }
 
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return totalSummary;
     }
-
 
 
     public List<Sales> getAllSales() {
@@ -139,22 +136,30 @@ public class GetSalesDocument {
 
         return productsList;
     }
+
     public int getLatestSaleIdFromDB() {
         try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
             var database = mongoClient.getDatabase("KhanMariaStore");
             var collection = database.getCollection("Sales");
 
-            // Sort in descending order based on the sale ID and get the first document
-            Document latestSaleDocument = collection.find()
+            // Get today's date
+            LocalDate today = LocalDate.now();
+
+            // Find the latest sale document for today
+            Document latestSaleDocument = collection.find(and(
+                            eq("saleDate", today.toString())))
                     .sort(descending("id"))
                     .limit(1)
                     .first();
 
             if (latestSaleDocument != null) {
                 // Extract the saleId field from the document
-                return latestSaleDocument.getInteger("id", 0) + 1;
+                int latestSaleId = latestSaleDocument.getInteger("id", 0);
+
+                // Increment the ID if there were sales today, otherwise start from 1
+                return latestSaleId + 1;
             } else {
-                // No sale documents found, return a starting sale ID
+                // No sale documents found for today, return a starting sale ID
                 return 1;
             }
         } catch (Exception e) {
@@ -162,5 +167,5 @@ public class GetSalesDocument {
             // Handle the exception as needed
             return 0;
         }
-    }
+}
 }

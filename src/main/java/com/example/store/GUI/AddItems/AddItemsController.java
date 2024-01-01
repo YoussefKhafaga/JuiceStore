@@ -107,6 +107,7 @@ public class AddItemsController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("Menu");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
@@ -128,6 +129,7 @@ public class AddItemsController {
             // Set the new scene on the current stage
             currentStage.setScene(scene);
             currentStage.setTitle("edit items");
+            currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
 
