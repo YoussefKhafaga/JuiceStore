@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorpane" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Purchases.Purchases">
+   <children>
+      <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo2.jpg" />
+         </image>
+      </ImageView>
+      <VBox layoutX="357.0" prefHeight="357.0" prefWidth="243.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="89.0" prefWidth="247.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label text="اختار تاريخ عملية الشراء" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <DatePicker fx:id="purchaseDatePicker" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="89.0" prefWidth="243.0">
+                     <children>
+                        <Label text="ادخل اسم عملية الشراء" />
+                        <TextField fx:id="purchaseNameTextField" maxWidth="150.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="89.0" prefWidth="245.0">
+                     <children>
+                        <Label text="ادخل سعر عملية الشراء" />
+                        <TextField fx:id="purchasePriceTextField" maxWidth="150.0" prefWidth="60.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="AddPurchaseButton" mnemonicParsing="false" text="اضافة عملية الشراء" />
+                  <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

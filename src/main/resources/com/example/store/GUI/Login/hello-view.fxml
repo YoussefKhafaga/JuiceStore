@@ -4,18 +4,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Login.HelloController">
    <children>
-      <Button fx:id="startButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="600.0" text="Start" />
-      <ImageView fitHeight="422.0" fitWidth="357.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../logo2.jpg" />
          </image>
       </ImageView>
       <VBox layoutX="357.0" layoutY="25.0" prefHeight="332.0" prefWidth="243.0">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="243.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="243.0" visible="false">
                <children>
                   <TextField fx:id="userNameTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
                      <HBox.margin>
@@ -32,7 +32,19 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="243.0">
+            <Label text="الدخول للبرنامج" textFill="RED">
+               <VBox.margin>
+                  <Insets left="80.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Button fx:id="startButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="الدخول">
+               <VBox.margin>
+                  <Insets left="80.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="243.0" visible="false">
                <children>
                   <PasswordField fx:id="passwordTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
                      <HBox.margin>
@@ -46,11 +58,11 @@
                   </Label>
                </children>
             </HBox>
-            <ToggleButton fx:id="showPasswordToggle" mnemonicParsing="false" text="اظهار كلمة المرور">
+            <ToggleButton fx:id="showPasswordToggle" mnemonicParsing="false" text="اظهار كلمة المرور" visible="false">
                <VBox.margin>
                   <Insets left="80.0" top="10.0" />
                </VBox.margin></ToggleButton>
-            <Button fx:id="LoginButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="تسجيل الدخول">
+            <Button fx:id="LoginButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="تسجيل الدخول" visible="false">
                <VBox.margin>
                   <Insets left="80.0" top="10.0" />
                </VBox.margin>

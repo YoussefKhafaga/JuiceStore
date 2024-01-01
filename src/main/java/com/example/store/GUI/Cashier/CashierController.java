@@ -418,6 +418,7 @@ public class CashierController {
             button.setId("Button" + (i+1));
             button.setText((i+1) + " " + categories.get(i));
             button.setOnAction(actionEvent -> pressCategoryButton(button));
+            button.setWrapText(true);
 
             // Add the button to the GridPane at the specified column and row
             gridPane.add(button, columnIndex, rowIndex);
@@ -455,6 +456,7 @@ public class CashierController {
             button.setId("Button" + (i+1));
             Products product = productList.get(i);
             button.setText((i + 1) + " " + product.getProductName());
+            button.setWrapText(true);
             button.setOnAction(actionEvent -> pressProductButton(button));
 
             // Add the button to the GridPane at the specified column and row
@@ -565,24 +567,26 @@ public class CashierController {
         return id;
     }
 
-    public void handleBackButton(){
-        try {
-            // Load the FXML file for the second view
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
-            Scene scene = new Scene(loader.load());
+    public void handleBackButton() {
+        if (borderpane.getChildren().contains(productsScrollPane)) {
+            // If in products view, switch to categories view
+            borderpane.setCenter(categoriesScrollPane);
+        } else {
+            // If in categories view, switch to menu view
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
+                Scene scene = new Scene(loader.load());
 
-            // Get the current stage
-            Stage currentStage = (Stage) borderpane.getScene().getWindow();
-
-            // Set the new scene on the current stage
-            currentStage.setScene(scene);
-            currentStage.setTitle("Menu");
-            currentStage.centerOnScreen();
-
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+                Stage currentStage = (Stage) borderpane.getScene().getWindow();
+                currentStage.setScene(scene);
+                currentStage.setTitle("Menu");
+                currentStage.centerOnScreen();
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
         }
     }
+
 
     public void handlePurchasesView(){
         try {
