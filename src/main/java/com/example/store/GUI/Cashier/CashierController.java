@@ -591,7 +591,7 @@ public class CashierController {
     public void handlePurchasesView(){
         try {
             // Load the FXML file for the second view
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Purchases/Purchases.fxml"));
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add("/styles.css");
 

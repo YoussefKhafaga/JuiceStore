@@ -5,8 +5,17 @@ public class TotalSummary {
     private double remaining;
     private double totalPrice;
     private Integer TotalQuantity;
+    private double purchases;
 
-    public TotalSummary(double totalPaid, double remaining, double totalPrice, Integer TotalQuantity) {
+    public double getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(double purchases) {
+        this.purchases = purchases;
+    }
+
+    public TotalSummary(double totalPaid, double remaining, double totalPrice, Integer TotalQuantity, double purchases) {
         this.totalPaid = totalPaid;
         this.remaining = remaining;
         this.totalPrice = totalPrice;
