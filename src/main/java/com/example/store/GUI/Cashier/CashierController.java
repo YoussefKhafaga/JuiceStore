@@ -550,6 +550,9 @@ public class CashierController {
             } else if (button.getText().contains("صغير")) {
                 button.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 12px;");
             }
+            else {
+                button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+            }
 
 
             // Add the button to the GridPane at the specified column and row
@@ -623,7 +626,7 @@ public class CashierController {
                 // Append header information to contentText
                 contentText.setText(header);
                 // Append the dynamically generated dashed line to contentText
-                contentText.setText(contentText.getText() + "____________________________");
+                contentText.setText(contentText.getText() + "____________________________\n");
                 // Append table headers
                 contentText.setText(contentText.getText() + "\nاسم المنتج | الكمية | السعر\n");
                 // Append the dynamically generated dashed line to contentText

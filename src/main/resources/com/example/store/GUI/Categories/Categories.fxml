@@ -41,7 +41,7 @@
             </Button>
          </children>
       </VBox>
-      <Button fx:id="BackButton" layoutX="274.0" layoutY="339.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="BackButton" layoutX="274.0" layoutY="339.0" mnemonicParsing="false" text="الرجوع" />
       <VBox layoutX="300.0" prefHeight="332.0" prefWidth="300.0">
          <children>
             <Label text="تعديل او الغاء النوع" textFill="RED">

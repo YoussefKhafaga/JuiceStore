@@ -79,7 +79,7 @@ public class AddItemsController {
 
             alert.showAndWait();
         }
-        else {
+            else {
             Document document = new Document()
                     .append("name", itemName.getText())
                     .append("price", Double.parseDouble(itemPrice.getText()))
