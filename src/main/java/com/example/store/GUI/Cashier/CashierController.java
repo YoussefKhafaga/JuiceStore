@@ -106,6 +106,8 @@ public class CashierController {
     @FXML
     public Label shiftNumber;
     public void initialize() {
+        DeliveryName = null;
+        DeliveryValue = null;
         Shift shift = new Shift();
         shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
         AddWorker.setOnAction(actionEvent -> {
@@ -217,6 +219,8 @@ public class CashierController {
             if (DeliveryValue != null || DeliveryName != null)
             {
                 printBill(sale, true);
+                AddSalesDocument addSalesDocument = new AddSalesDocument();
+                addSalesDocument.AddSale(sale);
                 total = 0.0;
                 totalPayment.setText(String.valueOf(total));
                 tableView.getItems().clear();
@@ -224,22 +228,23 @@ public class CashierController {
                 tableView.getSortOrder().clear();
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
-                AddSalesDocument addSalesDocument = new AddSalesDocument();
-                addSalesDocument.AddSale(sale);
                 saleProducts.clear();
             }
-            if(checkInputMoney()) {
-                printBill(sale, false);
-                total = 0.0;
-                totalPayment.setText(String.valueOf(total));
-                tableView.getItems().clear();
-                tableView.getSelectionModel().clearSelection();
-                tableView.getSortOrder().clear();
-                borderpane.setCenter(categoriesScrollPane);
-                remainingLabel.setText(String.valueOf(0.0));
-                AddSalesDocument addSalesDocument = new AddSalesDocument();
-                addSalesDocument.AddSale(sale);
-                saleProducts.clear();
+            else{
+                if (checkInputMoney())
+                {
+                    printBill(sale, false);
+                    AddSalesDocument addSalesDocument = new AddSalesDocument();
+                    addSalesDocument.AddSale(sale);
+                    total = 0.0;
+                    totalPayment.setText(String.valueOf(total));
+                    tableView.getItems().clear();
+                    tableView.getSelectionModel().clearSelection();
+                    tableView.getSortOrder().clear();
+                    borderpane.setCenter(categoriesScrollPane);
+                    remainingLabel.setText(String.valueOf(0.0));
+                    saleProducts.clear();
+                }
             }
         });
     }
@@ -273,6 +278,8 @@ public class CashierController {
             if (DeliveryValue != null || DeliveryName != null)
             {
                 printBill(sale, true);
+                AddSalesDocument addSalesDocument = new AddSalesDocument();
+                addSalesDocument.AddSale(sale);
                 total = 0.0;
                 totalPayment.setText(String.valueOf(total));
                 tableView.getItems().clear();
@@ -280,12 +287,15 @@ public class CashierController {
                 tableView.getSortOrder().clear();
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
-                AddSalesDocument addSalesDocument = new AddSalesDocument();
-                addSalesDocument.AddSale(sale);
                 saleProducts.clear();
             }
-            if(checkInputMoney()) {
+            else{
+                if (checkInputMoney())
+             {
                 printBill(sale, false);
+                 AddSalesDocument addSalesDocument = new AddSalesDocument();
+                 addSalesDocument.AddSale(sale);
+                 System.out.println(sale.getId());
                 total = 0.0;
                 totalPayment.setText(String.valueOf(total));
                 tableView.getItems().clear();
@@ -293,9 +303,8 @@ public class CashierController {
                 tableView.getSortOrder().clear();
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
-                AddSalesDocument addSalesDocument = new AddSalesDocument();
-                addSalesDocument.AddSale(sale);
                 saleProducts.clear();
+            }
             }
         }
         if (event.getText().equalsIgnoreCase("n")) {
@@ -596,19 +605,14 @@ public class CashierController {
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String dateTimeString = now.format(formatter);
-                System.out.println(printableWidth);
                 // Your header information
                 String dump = "\n";
                 String name = "محلات خان ماريا";
                 String address = "جناكليز شارع ابو قير";
                 String id = String.valueOf(sale.getId());
 
-
-                String header =  // Append the dynamically generated dashed line to contentText
-                        dump  + name + "\n" +
-                                address + "\n" +
-                                "رقم العملية " + id + "\n" +
-                                dateTimeString + "\n";
+                Shift shift = new Shift();
+                String header =  dump  + name + "\n" + address + "\n" + "رقم العملية " + id + "\n" + "رقم الشيفت " + shift.getLatestShiftId() + "\n" + dateTimeString + "\n";
 
                 // Create a Text node for content
                 contentText.setWrappingWidth(printableWidth);
@@ -672,7 +676,6 @@ public class CashierController {
 
                 printerJob.printPage(root);
                 printerJob.endJob();
-                System.out.println(contentText.getText());
             }
         } catch (Exception e) {
             // Handle the exception (e.g., log, display an error message)
@@ -1224,7 +1227,7 @@ public class CashierController {
         titleField.setStyle("-fx-margin: 10;");
         amountField.setStyle("-fx-margin: 10;");
 
-        dialog.getDialogPane().setPrefWidth(400);
+        dialog.getDialogPane().setPrefWidth(600);
 
         // Create buttons for OK and Cancel
         ButtonType submitButton = new ButtonType("ادخال", ButtonBar.ButtonData.OK_DONE);

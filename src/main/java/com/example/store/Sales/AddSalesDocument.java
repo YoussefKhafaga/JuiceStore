@@ -9,7 +9,12 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
+import java.time.LocalDate;
 import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.descending;
 
 public class AddSalesDocument {
     public void AddSale(Sales sale) {
@@ -24,9 +29,15 @@ public class AddSalesDocument {
                 System.err.println("Error: Sales collection is null.");
                 return;
             }
-
+            sale.setSaleDate(LocalDate.now());
             // Check if a sale with the same id already exists
-            Document existingSale = salesDocument.find(Filters.eq("id", sale.getId())).first();
+            Document existingSale = salesDocument.find(and(
+                            eq("saleDate", LocalDate.now()),
+                            eq("id", sale.getId())))  // Replace yourSaleId with the specific sale ID you're looking for
+                    .sort(descending("id"))
+                    .limit(1)
+                    .first();
+
 
             if (existingSale != null) {
                 // Sale with the same ID already exists, handle it if needed
@@ -43,7 +54,6 @@ public class AddSalesDocument {
 
                 salesDocument.insertOne(newSaleDocument);
 
-                System.out.println("Sale document added successfully!");
             }
         } catch (Exception e) {
             e.printStackTrace();

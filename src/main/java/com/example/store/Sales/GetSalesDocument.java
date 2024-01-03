@@ -141,7 +141,7 @@ public class GetSalesDocument {
                     .first();
             if (latestSaleDocument != null) {
                 // Extract the saleId field from the document
-                int latestSaleId = latestSaleDocument.getInteger("id", 0);
+                int latestSaleId = latestSaleDocument.getInteger("id");
 
                 // Increment the ID
                 return latestSaleId + 1;
