@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Login.HelloController">
+<AnchorPane fx:id="anchorpane" maxHeight="357.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Login.HelloController">
    <children>
       <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
          <image>

@@ -15,47 +15,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddCategories {
-        @FXML
-        private TextField categoryNameTextField;
-        @FXML
-        private Button AddButton;
-        @FXML
-        private Button BackButton;
-        @FXML
-        AnchorPane anchorpane;
-        @FXML
-        ComboBox<String> comboBox;
-        @FXML
-        TextField categoryNameTextFieldeditordelete;
-        @FXML
-        Button editButton;
-        @FXML
-        Button deleteButton;
-        public void initialize()
-        {
-            populateCategories();
-            AddButton.setOnAction(actionEvent -> {
-                if (categoryNameTextField.getText() != "" || categoryNameTextField.getText() != null) {
-                    addCategory(categoryNameTextField.getText());
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("عملية ناجحة");
-                    alert.setHeaderText(null);
-                    alert.setContentText("تم ادخال النوع بنجاح");
+    @FXML
+    private TextField categoryNameTextField;
+    @FXML
+    private Button AddButton;
+    @FXML
+    private Button BackButton;
+    @FXML
+    AnchorPane anchorpane;
+    @FXML
+    ComboBox<String> comboBox;
+    @FXML
+    TextField categoryNameTextFieldeditordelete;
+    @FXML
+    Button editButton;
+    @FXML
+    Button deleteButton;
+    public void initialize()
+    {
+        populateCategories();
+        AddButton.setOnAction(actionEvent -> {
+            if (categoryNameTextField.getText() != "" || categoryNameTextField.getText() != null) {
+                addCategory(categoryNameTextField.getText());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("عملية ناجحة");
+                alert.setHeaderText(null);
+                alert.setContentText("تم ادخال النوع بنجاح");
 
-                    alert.showAndWait();
-                }
-            });
+                alert.showAndWait();
+            }
+        });
 
-            BackButton.setOnAction(actionEvent -> {
-                switchToMenuView();
-            });
-            editButton.setOnAction(actionEvent -> {
-                editCategory();
-            });
-            deleteButton.setOnAction(actionEvent -> {
-                deleteCategory();
-            });
-        }
+        BackButton.setOnAction(actionEvent -> {
+            switchToMenuView();
+        });
+        editButton.setOnAction(actionEvent -> {
+            editCategory();
+        });
+        deleteButton.setOnAction(actionEvent -> {
+            deleteCategory();
+        });
+    }
 
     public void switchToMenuView(){
         try {

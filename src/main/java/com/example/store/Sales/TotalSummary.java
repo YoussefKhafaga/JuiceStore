@@ -15,7 +15,7 @@ public class TotalSummary {
         this.purchases = purchases;
     }
 
-    public TotalSummary(double totalPaid, double remaining, double totalPrice, Integer TotalQuantity, double purchases) {
+    public TotalSummary(double totalPaid, double remaining, double totalPrice, Integer TotalQuantity) {
         this.totalPaid = totalPaid;
         this.remaining = remaining;
         this.totalPrice = totalPrice;

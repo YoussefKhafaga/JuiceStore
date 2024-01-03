@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Menu.MenuController">
+<AnchorPane maxHeight="357.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Menu.MenuController">
    <children>
       <AnchorPane fx:id="anchorpane" layoutX="356.0" prefHeight="357.0" prefWidth="245.0" style="-fx-background-color: #FFFFFF;">
          <children>
@@ -20,7 +20,7 @@
             <Button fx:id="CategoriesButton" layoutX="62.0" layoutY="236.0" mnemonicParsing="false" prefWidth="123.0" text="الاصناف" />
          </children>
       </AnchorPane>
-      <ImageView fitHeight="422.0" fitWidth="357.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="357.0" fitWidth="416.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../logo2.jpg" />
          </image>

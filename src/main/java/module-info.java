@@ -3,7 +3,7 @@ module com.example.store {
     requires org.mongodb.bson;
     requires org.mongodb.driver.core;
     requires javafx.fxml;
-    //requires javafx.graphics;
+    requires javafx.graphics;
     requires javafx.controls;
 
     opens com.example.store to javafx.fxml;

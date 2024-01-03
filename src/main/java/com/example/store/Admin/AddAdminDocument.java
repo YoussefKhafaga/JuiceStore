@@ -34,7 +34,7 @@ public class AddAdminDocument {
 
             if (existingAdmin != null) {
                 // Admin with the same username already exists, handle accordingly
-                System.out.println("Admin with username " + adminUsername + " already exists!");
+                System.out.println("الادمن بأسم " + adminUsername + " موجود بالفعل ");
             } else {
                 // Generate a random salt for the admin
                 String adminSalt = generateSalt();

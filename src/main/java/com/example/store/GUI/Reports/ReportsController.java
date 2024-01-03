@@ -1,17 +1,23 @@
 package com.example.store.GUI.Reports;
 
+
 import com.example.store.Sales.GetSalesDocument;
 import com.example.store.Sales.TotalSummary;
+import com.example.store.Shift;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportsController {
     @FXML
@@ -34,8 +40,34 @@ public class ReportsController {
     private Button DailyReport;
     @FXML
     private Button MonthlyReport;
+    @FXML
+    private Button Submit;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TableView<Shift> tableView;
+    @FXML
+    private TableColumn <Shift, String> WorkerName;
+    @FXML
+    private TableColumn <Shift, Integer> ShiftNumber;
+    @FXML
+    private TableColumn<Shift, String> StartTime;
+    @FXML
+    private TableColumn <Shift, String> EndTime;
+    @FXML
+    private TableColumn <Shift, Double> Dorg;
+    ObservableList<Shift> shiftstable = FXCollections.observableArrayList();
     public void initialize()
     {
+        WorkerName.setCellValueFactory(new PropertyValueFactory<Shift, String>("username"));
+        ShiftNumber.setCellValueFactory(new PropertyValueFactory<Shift, Integer>("id"));
+        StartTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("beginLocalTime"));
+        EndTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("endLocalTime"));
+        Dorg.setCellValueFactory(new PropertyValueFactory<Shift, Double>("totalMoney"));
+        tableView.setItems(shiftstable);
+        Submit.setOnAction(actionEvent -> {
+            handleSubmitButton();
+        });
         DailyReport.setOnAction(actionEvent -> {
             dailyReport();
         });
@@ -52,15 +84,54 @@ public class ReportsController {
             handleBackButton();
         });
     }
+    public void checkExistingShift(Shift newShift) {
+        Shift existingShift = null;
+        for (Shift shift : shiftstable) {
+            if (shift.getId() == newShift.getId()) {
+                existingShift = shift; // Corrected line
+                break;
+            }
+        }
+
+        /*if (existingShift != null) {
+            // If the item exists, update it
+            existingShift.setProductQuantity(newProduct.getProductQuantity());
+        } else {
+            // If the item doesn't exist, add a new item
+            tableData.add(newProduct);
+        }*/
+    }
+    public void handleSubmitButton() {
+        LocalDate selectedDate = datePicker.getValue();
+        List<Shift> shifts = new ArrayList<>();
+        if (selectedDate != null) {
+            // Fetch shifts for the selected date and update the table
+            Shift shift = new Shift();
+            shifts = shift.getShiftsByDate(selectedDate);
+            shiftstable.addAll(shifts);
+            tableView.setItems(shiftstable);
+            tableView.refresh();
+        } else {
+            // Date is not selected, show an alert or perform appropriate action
+            showAlert("من فضلك اختار التاريخ");
+        }
+    }
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("تحذير");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     public void dailyReport()
     {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
 
         totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusDays(1), LocalDate.now());
-        income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        outcome.setText(String.valueOf(totalSummary.getRemaining()));
-        netIncome.setText(String.valueOf(totalSummary.getTotalPaid() - totalSummary.getRemaining()));
+        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
+        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
     public void weeklyReport()
@@ -69,9 +140,9 @@ public class ReportsController {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
 
         totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusWeeks(1), LocalDate.now());
-        income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        outcome.setText(String.valueOf(totalSummary.getRemaining()));
-        netIncome.setText(String.valueOf(totalSummary.getTotalPaid() - totalSummary.getRemaining()));
+        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
+        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
     public void MonthlyReport()
@@ -80,9 +151,9 @@ public class ReportsController {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
 
         totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusMonths(1), LocalDate.now());
-        income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        outcome.setText(String.valueOf(totalSummary.getRemaining()));
-        netIncome.setText(String.valueOf(totalSummary.getTotalPaid() - totalSummary.getRemaining()));
+        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
+        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
     public void yearlyReport()
@@ -91,9 +162,9 @@ public class ReportsController {
         GetSalesDocument getSalesDocument = new GetSalesDocument();
 
         totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusYears(1), LocalDate.now());
-        income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        outcome.setText(String.valueOf(totalSummary.getRemaining()));
-        netIncome.setText(String.valueOf(totalSummary.getTotalPaid() - totalSummary.getRemaining()));
+        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
+        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
     public void handleBackButton(){

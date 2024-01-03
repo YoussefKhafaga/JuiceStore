@@ -9,7 +9,9 @@ import static com.mongodb.client.model.Aggregates.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,52 +33,37 @@ public class GetSalesDocument {
             // Match documents within the date range
             Date start = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date end = Date.from(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-            // Match documents within the date range
+
+            // Match documents within the date range and count them
             var matchPipeline = Arrays.asList(
                     match(and(
                             gte("saleDate", start),
                             lt("saleDate", end)
                     )),
-                    unwind("$products"),  // Unwind the products array
-                    project(fields(
-                            include("totalPaid", "remaining", "totalPrice", "products.quantity"),
-                            computed("formattedDate", new Document("$dateToString",
-                                    new Document("format", "%Y-%m-%d").append("date", "$saleDate")))
-                    )),
-                    match(and(
-                            gte("formattedDate", startDate.toString()),
-                            lt("formattedDate", endDate.plusDays(1).toString())
-                    ))
-            );
-
-            var groupPipeline = Arrays.asList(
                     group(null,
-                            sum("totalPaid", "$totalPaid"),
-                            sum("remaining", "$remaining"),
-                            sum("totalPrice", "$totalPrice"),
-                            sum("totalQuantity", "$products.quantity")  // Sum the quantity
+                            sum("totalSales", (1)),
+                            sum("totalPrice", "$totalPrice")
                     )
             );
 
-// Combine the two lists
+            // Combine the two lists
             List<Bson> aggregationPipeline = new ArrayList<>();
             aggregationPipeline.addAll(matchPipeline);
-            aggregationPipeline.addAll(groupPipeline);
 
-// Execute the aggregation pipeline
+            // Execute the aggregation pipeline
             List<Document> aggregationResult = new ArrayList<>();
             salesCollection.aggregate(aggregationPipeline)
                     .allowDiskUse(true)
                     .into(aggregationResult);
 
-// Process the results
-            for (Document resultDocument : aggregationResult) {
-                totalSummary.setTotalPaid(resultDocument.getDouble("totalPaid"));
-                totalSummary.setRemaining(resultDocument.getDouble("remaining"));
-                totalSummary.setTotalPrice(resultDocument.getDouble("totalPrice"));
-                totalSummary.setTotalQuantity(resultDocument.getInteger("totalQuantity", 0));
+            // Process the results
+            if (!aggregationResult.isEmpty()) {
+                totalSummary.setTotalQuantity(aggregationResult.get(0).getInteger("totalSales"));
+                totalSummary.setTotalPrice(aggregationResult.get(0).getDouble("totalPrice"));
             }
 
+            System.out.println(totalSummary.getTotalQuantity());
+            System.out.println(totalSummary.getTotalPrice());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +71,7 @@ public class GetSalesDocument {
 
         return totalSummary;
     }
+
 
 
     public List<Sales> getAllSales() {
@@ -147,16 +135,15 @@ public class GetSalesDocument {
 
             // Find the latest sale document for today
             Document latestSaleDocument = collection.find(and(
-                            eq("saleDate", today.toString())))
+                            eq("saleDate", today)))
                     .sort(descending("id"))
                     .limit(1)
                     .first();
-
             if (latestSaleDocument != null) {
                 // Extract the saleId field from the document
                 int latestSaleId = latestSaleDocument.getInteger("id", 0);
 
-                // Increment the ID if there were sales today, otherwise start from 1
+                // Increment the ID
                 return latestSaleId + 1;
             } else {
                 // No sale documents found for today, return a starting sale ID
@@ -167,5 +154,7 @@ public class GetSalesDocument {
             // Handle the exception as needed
             return 0;
         }
-}
+    }
+
+
 }

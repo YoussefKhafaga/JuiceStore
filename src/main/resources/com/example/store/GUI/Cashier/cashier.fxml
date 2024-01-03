@@ -6,10 +6,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
+<BorderPane fx:id="borderpane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
    <right>
       <VBox prefHeight="404.0" prefWidth="174.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label fx:id="shiftNumber" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label text="رقم الوردية">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
             <ImageView fitHeight="283.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../logo2.jpg" />
@@ -137,8 +154,11 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="75.0" prefWidth="683.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="Delivery" mnemonicParsing="false" text="ديلفري" />
             <Button fx:id="Returns" mnemonicParsing="false" text="مرتجعات" />
-            <Button fx:id="Purchases" mnemonicParsing="false" text="مشتريات" />
+            <Button fx:id="OpenShift" mnemonicParsing="false" text="فتح الوردية" />
+            <Button fx:id="CloseShift" layoutX="325.0" layoutY="35.0" mnemonicParsing="false" text="غلق الوردية" />
+            <Button fx:id="AddWorker" mnemonicParsing="false" text="اضافة عامل جديد" />
          </children>
       </HBox>
    </bottom>

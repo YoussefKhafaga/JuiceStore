@@ -75,7 +75,7 @@ public class HelloController {
         }
     }
 
-    private boolean validateLogin(String username, String password) {
+    public boolean validateLogin(String username, String password) {
         try (MongoClient mongoClient = MongoClients.create(MONGO_DB_URL)) {
             MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
             MongoCollection<Document> adminsCollection = database.getCollection(COLLECTION_NAME);
@@ -112,7 +112,7 @@ public class HelloController {
 
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Login Error");
+        alert.setTitle("خطأ");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
