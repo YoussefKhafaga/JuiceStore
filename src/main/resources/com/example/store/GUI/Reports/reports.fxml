@@ -101,8 +101,9 @@
                <children>
                   <TableView fx:id="tableView" prefHeight="237.0" prefWidth="1077.0">
                     <columns>
-                      <TableColumn fx:id="Dorg" prefWidth="125.0" text="مبلغ نهاية الشيفت" />
-                      <TableColumn fx:id="EndTime" prefWidth="376.0" text="توقيت الانتهاء" />
+                        <TableColumn fx:id="totalSalesColumn" prefWidth="154.0" text="اجمالي المبيعات" />
+                      <TableColumn fx:id="Dorg" prefWidth="142.0" text="مبلغ نهاية الشيفت" />
+                      <TableColumn fx:id="EndTime" prefWidth="280.0" text="توقيت الانتهاء" />
                         <TableColumn fx:id="StartTime" prefWidth="221.0" text="توقيت البدأ" />
                         <TableColumn fx:id="ShiftNumber" minWidth="0.0" prefWidth="63.0" text="رقم الوردية" />
                         <TableColumn fx:id="WorkerName" prefWidth="291.0" text="اسم العامل" />

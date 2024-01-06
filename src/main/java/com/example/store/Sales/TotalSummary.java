@@ -18,8 +18,8 @@ public class TotalSummary {
     public TotalSummary(double totalPaid, double remaining, double totalPrice, Integer TotalQuantity) {
         this.totalPaid = totalPaid;
         this.remaining = remaining;
-        this.totalPrice = totalPrice;
-        this.TotalQuantity = TotalQuantity;
+        this.totalPrice = 0.0;
+        this.TotalQuantity = 0;
     }
 
     public TotalSummary() {

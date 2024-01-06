@@ -187,10 +187,12 @@ public class Shift {
 
             // Create an update document
             Document updateDocument = new Document();
-            Shift editedshift= new Shift();
-            // latest shift
-            //editedshift = editedshift.getShiftByNumber(shiftnum);
+
             // Add non-null fields to the update document
+            Shift latestshift = new Shift();
+            GetSalesDocument getSalesDocument = new GetSalesDocument();
+            latestshift = latestshift.getShiftByNumber(shiftnum);
+
             if (shift.getEndLocalDate() != null) {
                 updateDocument.append("endLocalDate", shift.getEndLocalDate().toString());
             }
@@ -200,13 +202,16 @@ public class Shift {
             if (shift.getTotalMoney() != null) {
                 updateDocument.append("totalMoney", shift.getTotalMoney());
             }
-            GetSalesDocument getSalesDocument = new GetSalesDocument();
+            if(shift.getTotal() == 0.0)
+            {
+                updateDocument.append("total", getSalesDocument.getTotalSummaryTime(latestshift.getBeginLocalDate(), shift.getEndLocalDate(), latestshift.getBeginLocalTime(), shift.getEndLocalTime()));
+            }
 
             // Exclude the "_id" field from the update
             updateDocument.remove("_id");
             // if the worker did not open a shift with his name and id and wants to close a shift
             long shiftCount1 = shiftsCollection.countDocuments(filterbynameandid);
-            if(shiftCount1 == 0)
+            /*if(shiftCount1 == 0)
             {
                 Shift latestshift = new Shift();
                 latestshift = latestshift.getShiftByNumber(shiftnum);
@@ -217,13 +222,11 @@ public class Shift {
                 updateDocument.append("endLocalDate", shift.endLocalDate.toString());
                 updateDocument.append("endLocalTime", shift.endLocalTime.toString());
                 updateDocument.append("totalMoney", shift.totalMoney);
+                updateDocument.append("total", getSalesDocument.getTotalSummaryTime(latestshift.getBeginLocalDate(), shift.getEndLocalDate(), latestshift.getBeginLocalTime(), shift.getEndLocalTime()));
                 shiftsCollection.insertOne(updateDocument);
                 return true;
-            }
+            }*/
             // Perform the update operation
-            shiftsCollection.updateOne(filterbynameandid, new Document("$set", updateDocument));
-            editedshift = getShiftByNumber(getLatestShiftId());
-            updateDocument.append("total", getSalesDocument.getTotalSummaryTime(editedshift.getBeginLocalDate(), editedshift.getEndLocalDate(), editedshift.getBeginLocalTime(), editedshift.getEndLocalTime()));
             shiftsCollection.updateOne(filterbynameandid, new Document("$set", updateDocument));
             return true;
         } catch (Exception e) {
@@ -245,11 +248,25 @@ public class Shift {
             // Find the document using the filter
             Document result = shiftsCollection.find(filter).first();
 
+            LocalDate endLocalDate = null;
+            LocalTime endLocalTime = null;
+
             // Convert the document to a Shift object
             String beginLocalDateStr = result.getString("beginLocalDate");
             String beginLocalTimeStr = result.getString("beginLocalTime");
             String endLocalDateStr = result.getString("endLocalDate");
             String endLocalTimeStr = result.getString("endLocalTime");
+
+            // Check if endLocalDateStr is not null before parsing
+            if (endLocalDateStr != null) {
+                endLocalDate = LocalDate.parse(endLocalDateStr);
+            }
+
+            // Check if endLocalTimeStr is not null before parsing
+            if (endLocalTimeStr != null) {
+                endLocalTime = LocalTime.parse(endLocalTimeStr);
+            }
+
 
             // Convert String to LocalDate
             LocalDate beginLocalDate = LocalDate.parse(beginLocalDateStr);
@@ -257,11 +274,6 @@ public class Shift {
             // Convert String to LocalTime
             LocalTime beginLocalTime = LocalTime.parse(beginLocalTimeStr);
 
-            // Convert String to LocalDate
-            LocalDate endLocalDate = LocalDate.parse(endLocalDateStr);
-
-        // Convert String to LocalTime
-            LocalTime endLocalTime = LocalTime.parse(endLocalTimeStr);
 
             return new Shift(
                     result.getString("username"),

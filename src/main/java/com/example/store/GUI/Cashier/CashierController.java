@@ -694,7 +694,7 @@ public class CashierController {
 
                 Shift shift = new Shift();
                 String header =  dump  + name + "\n" + address + "\n" + "رقم العملية " + id + "\n" + "رقم الشيفت " + shift.getLatestShiftId() + "\n" + dateTimeString + "\n";
-
+                header = header + "رقم الموبايل" + "01222692416\n";
                 // Create a Text node for content
                 contentText.setWrappingWidth(printableWidth);
                 contentText.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);

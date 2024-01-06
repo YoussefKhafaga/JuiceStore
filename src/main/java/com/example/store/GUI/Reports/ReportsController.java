@@ -57,8 +57,8 @@ public class ReportsController {
     private TableColumn <Shift, String> EndTime;
     @FXML
     private TableColumn <Shift, Double> Dorg;
-    //@FXML
-    //private TableColumn <Shift, Double> totalSalesColumn;
+    @FXML
+    private TableColumn <Shift, Double> totalSalesColumn;
     ObservableList<Shift> shiftstable = FXCollections.observableArrayList();
     public void initialize()
     {
@@ -67,7 +67,7 @@ public class ReportsController {
         StartTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("beginLocalTime"));
         EndTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("endLocalTime"));
         Dorg.setCellValueFactory(new PropertyValueFactory<Shift, Double>("totalMoney"));
-        //totalSalesColumn.setCellValueFactory(new PropertyValueFactory<Shift, Double>("total"));
+        totalSalesColumn.setCellValueFactory(new PropertyValueFactory<Shift, Double>("total"));
         tableView.setItems(shiftstable);
         Submit.setOnAction(actionEvent -> {
             handleSubmitButton();
@@ -79,7 +79,7 @@ public class ReportsController {
             weeklyReport();
         });
         MonthlyReport.setOnAction(actionEvent -> {
-            MonthlyReport();
+            monthlyReport();
         });
         yearlyReport.setOnAction(actionEvent -> {
             yearlyReport();
@@ -132,50 +132,62 @@ public class ReportsController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    public void dailyReport()
-    {
+    public void dailyReport() {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
         LocalDate selectedDate = datePicker.getValue();
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusDays(1), selectedDate);
-        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        totalSummary = getSalesDocument.getTotalSummaryDay(selectedDate);
+
+        if (totalSummary == null) {
+            totalSummary = new TotalSummary(); // Initialize with default values
+        }
+
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
-    public void weeklyReport()
-    {
+
+    public void weeklyReport() {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
         LocalDate selectedDate = datePicker.getValue();
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusWeeks(1), selectedDate);
-        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        totalSummary = getSalesDocument.getTotalSummary(selectedDate.now().minusWeeks(1), selectedDate);
+
+        if (totalSummary == null) {
+            totalSummary = new TotalSummary(); // Initialize with default values
+        }
+
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
-    public void MonthlyReport()
-    {
+
+    public void monthlyReport() {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
         LocalDate selectedDate = datePicker.getValue();
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusMonths(1), selectedDate);
-        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        totalSummary = getSalesDocument.getTotalSummary(selectedDate.now().minusMonths(1), selectedDate);
+
+        if (totalSummary == null) {
+            totalSummary = new TotalSummary(); // Initialize with default values
+        }
+
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
-    public void yearlyReport()
-    {
+
+    public void yearlyReport() {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
         LocalDate selectedDate = datePicker.getValue();
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusYears(1), selectedDate);
-        //income.setText(String.valueOf(totalSummary.getTotalPaid()));
-        //outcome.setText(String.valueOf(totalSummary.getRemaining()));
+        totalSummary = getSalesDocument.getTotalSummary(selectedDate.now().minusYears(1), selectedDate);
+
+        if (totalSummary == null) {
+            totalSummary = new TotalSummary(); // Initialize with default values
+        }
+
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
         totalSales.setText(String.valueOf(totalSummary.getTotalQuantity()));
     }
+
     public void handleBackButton(){
         try {
             // Load the FXML file for the second view
