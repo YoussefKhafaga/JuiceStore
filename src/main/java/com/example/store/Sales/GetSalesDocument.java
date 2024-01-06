@@ -9,10 +9,7 @@ import static com.mongodb.client.model.Aggregates.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -40,7 +37,7 @@ public class GetSalesDocument {
                             gte("saleDate", start),
                             lt("saleDate", end)
                     )),
-                    group(null,
+                    group(0.0,
                             sum("totalSales", (1)),
                             sum("totalPrice", "$totalPrice")
                     )
@@ -62,15 +59,55 @@ public class GetSalesDocument {
                 totalSummary.setTotalPrice(aggregationResult.get(0).getDouble("totalPrice"));
             }
 
-            System.out.println(totalSummary.getTotalQuantity());
-            System.out.println(totalSummary.getTotalPrice());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return totalSummary;
     }
+
+    public Double getTotalSummaryTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            var database = mongoClient.getDatabase("KhanMariaStore");
+            var salesCollection = database.getCollection("Sales");
+
+            // Convert LocalDate and LocalTime to Date
+            Date startDateTime = Date.from(LocalDateTime.of(startDate, startTime).atZone(ZoneId.systemDefault()).toInstant());
+            Date endDateTime = Date.from(LocalDateTime.of(endDate, endTime).atZone(ZoneId.systemDefault()).toInstant());
+            System.out.println(startDateTime + " " + endDateTime);
+            // Match documents within the date and time range
+            var matchPipeline = Arrays.asList(
+                    match(and(
+                            gte("saleDate", startDateTime),
+                            lt("saleDate", endDateTime)
+                    )),
+                    group(0.0,
+                            sum("totalPrice", "$totalPrice")
+                    )
+            );
+
+            // Combine the two lists
+            List<Bson> aggregationPipeline = new ArrayList<>();
+            aggregationPipeline.addAll(matchPipeline);
+
+            // Execute the aggregation pipeline
+            List<Document> aggregationResult = new ArrayList<>();
+            salesCollection.aggregate(aggregationPipeline)
+                    .allowDiskUse(true)
+                    .into(aggregationResult);
+
+            // Process the results
+            if (!aggregationResult.isEmpty()) {
+                return aggregationResult.get(0).getDouble("totalPrice");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0.0;
+    }
+
 
 
 

@@ -4,25 +4,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Returns.ReturnsController">
+<BorderPane prefHeight="700.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Returns.ReturnsController">
    <center>
-      <AnchorPane fx:id="anchorpane" maxHeight="357.0" maxWidth="600.0" prefHeight="357.0" prefWidth="600.0">
+      <AnchorPane fx:id="anchorpane" maxHeight="704.0" maxWidth="1403.0" prefHeight="704.0" prefWidth="1366.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="700.0" fitWidth="705.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../logo2.jpg" />
                </image>
             </ImageView>
-            <VBox alignment="TOP_CENTER" layoutX="357.0" prefHeight="357.0" prefWidth="244.0">
+            <VBox alignment="TOP_CENTER" layoutX="700.0" prefHeight="700.0" prefWidth="669.0" spacing="20.0">
                <children>
                   <Label text="اختر تاريخ العملية">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Label>
-                  <DatePicker fx:id="DateSelector">
+                  <DatePicker fx:id="DateSelector" prefHeight="50.0" prefWidth="400.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
@@ -31,13 +34,21 @@
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Label>
-                  <TextField fx:id="saleId" maxWidth="174.0" prefHeight="25.0" prefWidth="80.0">
+                  <TextField fx:id="saleId" maxWidth="388.0" prefHeight="50.0" prefWidth="400.0">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
                   </TextField>
-                  <ScrollPane fx:id="scrollablePane" prefHeight="133.0" prefWidth="244.0">
+                  <Button fx:id="enterBoth" mnemonicParsing="false" text="ادخال">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <ScrollPane fx:id="scrollablePane" hvalue="1.0" prefHeight="300.0" prefWidth="244.0" vvalue="1.0">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                     </content>
@@ -47,8 +58,14 @@
                   </ScrollPane>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع" />
-                        <Button fx:id="DeleteSaleButton" mnemonicParsing="false" text="حذف العملية" />
+                        <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Button>
+                        <Button fx:id="DeleteSaleButton" mnemonicParsing="false" text="حذف العملية">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children>

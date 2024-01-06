@@ -1,6 +1,7 @@
 package com.example.store.GUI.Cashier;
 
 import com.example.store.GUI.Login.HelloController;
+import com.example.store.GUI.Menu.MenuController;
 import com.example.store.Shift;
 import com.example.store.Workers;
 import com.sun.javafx.print.PrintHelper;
@@ -9,10 +10,10 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.print.*;
 import javafx.scene.Group;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import com.example.store.GUI.Categories.AddCategories;
 import com.example.store.Product.Products;
@@ -31,8 +32,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -92,13 +91,9 @@ public class CashierController {
     //@FXML
     //private Button Purchases;
     @FXML
-    private Button Returns;
-    @FXML
     private Button CloseShift;
-    @FXML
-    private Button OpenShift;
-    @FXML
-    private Button AddWorker;
+    //@FXML
+    //private Button OpenShift;
     @FXML
     private Button Delivery;
     private String DeliveryName = null;
@@ -110,15 +105,10 @@ public class CashierController {
         DeliveryValue = null;
         Shift shift = new Shift();
         shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
-        AddWorker.setOnAction(actionEvent -> {
-            handleAddWorker();
-        });
         Delivery.setOnAction(actionEvent -> {
             handleDelivery();
         });
-        Returns.setOnAction(actionEvent -> {
-            handleReturnsView();
-        });
+        Delivery.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         /*Purchases.setOnAction(actionEvent -> {
             handlePurchasesView();
         });*/
@@ -126,15 +116,16 @@ public class CashierController {
         CloseShift.setOnAction(actionEvent -> {
             checkCloseShift();
         });
-
-        OpenShift.setOnAction(actionEvent -> {
+        CloseShift.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+        /*OpenShift.setOnAction(actionEvent -> {
             checkOpenShift();
-        });
+        });*/
+        //OpenShift.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         //GetProductDocument getProductDocument = new GetProductDocument();
         AddCategories addCategories = new AddCategories();
         List<String> categoriesList;
         categoriesList = addCategories.getAllCategories();
-        categoriesScrollPane = createCategories(categoriesList, categoriesList.size(), 5);
+        categoriesScrollPane = createCategories(categoriesList, categoriesList.size(), 4);
         borderpane.setCenter(categoriesScrollPane);
         // Set up event handler for key pressed events
         borderpane.setOnKeyPressed(event -> handleKeyPressed(event));
@@ -162,15 +153,18 @@ public class CashierController {
                 alert.showAndWait();
             }
         });
+        enterNumber.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         BackButton.setOnAction(actionEvent -> {
             handleBackButton();
         });
+        BackButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         enterPaid.setOnAction(actionEvent -> {
             paid = Double.parseDouble(paidTextField.getText());
             Double remaining = calculateReamining(Double.parseDouble(paidTextField.getText()));
             remainingLabel.setText(String.valueOf(remaining));
             borderpane.requestFocus();
         });
+        enterPaid.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             Button deleteButton = new Button("حذف");
             {
@@ -213,6 +207,7 @@ public class CashierController {
             saleProducts.clear();
             paidTextField.clear();
         });
+        newOrderButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         printButton.setOnAction(actionEvent -> {
             Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
                     Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
@@ -247,6 +242,8 @@ public class CashierController {
                 }
             }
         });
+        printButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+
     }
 
     private void handleKeyPressed(KeyEvent event) {
@@ -389,14 +386,14 @@ public class CashierController {
         String buttonText = targetButton.getText();
         String productName = buttonText.replaceAll("[0-9]+", "").trim();
         products = getProductDocument.retrieveProductByName(productName);
-        int quantity = Integer.parseInt(showCustomInputDialog(products.getProductName()));
+        Double quantity = Double.parseDouble(showCustomInputDialog(products.getProductName()));
         ctrlPressed = false;
         paidTextField.requestFocus();
         Products product = new Products(products.getProductName(), products.getProductPrice(), quantity);
+        checkExistingSale(product);
         saleProducts.add(product);
         total += calculateTotal(product.getProductPrice(), quantity);
         totalPayment.setText(String.valueOf(total));
-        checkExistingSale(product);
         borderpane.requestFocus();
     }
 
@@ -420,7 +417,7 @@ public class CashierController {
         tableView.refresh();
     }
 
-    private Double calculateTotal(double price, int quantity) {
+    private Double calculateTotal(double price, Double quantity) {
         return (price * quantity);
     }
 
@@ -428,7 +425,6 @@ public class CashierController {
         // Create the custom input dialog
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("ادخال الكمية");
-        dialog.setHeaderText(productName + " ادخل كمية المنتج");
 
         // Set the icon (optional)
         dialog.setGraphic(null);
@@ -437,13 +433,30 @@ public class CashierController {
         TextField textField = new TextField();
 
         // Add margin to the TextField
-        textField.setStyle("-fx-margin: 10;"); // You can adjust the margin value as needed
+        textField.setStyle("-fx-margin: 10;");
+
+        // Create buttons for digits 0 to 9 and fractions
+        Button[] digitButtons = new Button[10];
+        for (int i = 0; i < 10; i++) {
+            final int digit = i;
+            digitButtons[i] = new Button(Integer.toString(i));
+            digitButtons[i].setOnAction(e -> setTextFieldValue(textField, Integer.toString(digit)));
+        }
+
+        // Additional buttons for fractions
+        Button[] fractionButtons = {
+                createFractionButton("1/2", "0.5", textField),
+                createFractionButton("1/4", "0.25", textField),
+                createFractionButton("1/8", "0.125", textField),
+                createFractionButton("1/3", "0.33333", textField),
+                createFractionButton("2/3", "0.66666", textField)
+        };
 
         // Create buttons for OK and Cancel
-        ButtonType submitButton = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
+        ButtonType submitButton = new ButtonType("تأكيد", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(submitButton, ButtonType.CANCEL);
 
-        // Enable/Disable submit button based on whether a name was entered
+        // Enable/Disable submit button based on whether text is entered
         Node submitButtonNode = dialog.getDialogPane().lookupButton(submitButton);
         submitButtonNode.setDisable(true);
 
@@ -460,11 +473,32 @@ public class CashierController {
             return null;
         });
 
-        // Customize the layout of the DialogPane (add padding)
-        dialog.getDialogPane().setPadding(new Insets(20)); // You can adjust the padding value as needed
+        // Create a GridPane for the buttons
+        GridPane buttonsGrid = new GridPane();
+        buttonsGrid.setHgap(10);
+        buttonsGrid.setVgap(10);
 
-        // Set the content of the DialogPane to include the TextField
-        dialog.getDialogPane().setContent(new VBox(10, textField));
+        // Add digit buttons to the grid
+        for (int i = 0; i < 10; i++) {
+            buttonsGrid.add(digitButtons[i], i % 3, i / 3);
+        }
+
+        // Add fraction buttons to the grid
+        for (int i = 0; i < 5; i++) {
+            buttonsGrid.add(fractionButtons[i], i % 3, i / 3 + 3);
+        }
+
+        // Wrap the GridPane with an HBox and center it
+        HBox buttonsHBox = new HBox(buttonsGrid);
+        buttonsHBox.setAlignment(Pos.CENTER);
+
+        // Create a VBox to center the content, including the header and the wrapped HBox
+        VBox contentVBox = new VBox(10, new Text(productName + " ادخل كمية المنتج"), textField, buttonsHBox);
+        contentVBox.setAlignment(Pos.CENTER);
+
+        // Customize the layout of the DialogPane (add padding)
+        dialog.getDialogPane().setPrefSize(300, 300);
+        dialog.getDialogPane().setContent(contentVBox);
 
         // Request focus on the TextField
         textField.requestFocus();
@@ -472,6 +506,17 @@ public class CashierController {
         // Show the dialog and wait for the user's response
         return dialog.showAndWait().orElse(null);
     }
+
+    private Button createFractionButton(String label, String value, TextField textField) {
+        Button button = new Button(label);
+        button.setOnAction(e -> setTextFieldValue(textField, value));
+        return button;
+    }
+
+    private void setTextFieldValue(TextField textField, String value) {
+        textField.setText(value);
+    }
+
     private void pressCategoryButton(Button targetButton) {
         GetProductDocument getProductDocument = new GetProductDocument();
         List<Products> productsList;
@@ -479,7 +524,7 @@ public class CashierController {
         String buttonText = targetButton.getText();
         String category = buttonText.replaceAll("[0-9]+", "").trim();
         productsList = getProductDocument.retrieveProductsByCategory(category);
-        scrollPane = createCategoryProducts(productsList, productsList.size(), 5);
+        scrollPane = createCategoryProducts(productsList, productsList.size(), 4);
         productsScrollPane = scrollPane;
         borderpane.setCenter(productsScrollPane);
     }
@@ -502,7 +547,7 @@ public class CashierController {
             button.setText((i+1) + " " + categories.get(i));
             button.setOnAction(actionEvent -> pressCategoryButton(button));
             button.setWrapText(true);
-            button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+            button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px; -fx-font-size: 14px;");
 
             // Add the button to the GridPane at the specified column and row
             gridPane.add(button, columnIndex, rowIndex);
@@ -544,14 +589,14 @@ public class CashierController {
             button.setOnAction(actionEvent -> pressProductButton(button));
             // Check the text content and set the button color and border radius accordingly
             if (button.getText().contains("كبير")) {
-                button.setStyle("-fx-background-color: lightcoral; -fx-background-radius: 12px;");
+                button.setStyle("-fx-background-color: lightcoral; -fx-background-radius: 12px; -fx-font-size: 14px;");
             } else if (button.getText().contains("وسط")) {
-                button.setStyle("-fx-background-color: darkorange; -fx-background-radius: 12px;");
+                button.setStyle("-fx-background-color: darkorange; -fx-background-radius: 12px; -fx-font-size: 14px;");
             } else if (button.getText().contains("صغير")) {
-                button.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 12px;");
+                button.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 12px; -fx-font-size: 14px;");
             }
             else {
-                button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+                button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px; -fx-font-size: 14px;");
             }
 
 
@@ -634,7 +679,7 @@ public class CashierController {
                 // Append table content in a table format
                 for (Products product : tableData) {
                     contentText.setText(contentText.getText() +
-                            String.format("%s | %d | %.2f\n",
+                            String.format("%s | %.2f | %.2f\n",
                                     product.getProductName(), product.getProductQuantity()
                                     , product.getProductPrice()));
                     // Append the dynamically generated dashed line to contentText
@@ -664,6 +709,7 @@ public class CashierController {
                     contentText.setText(contentText.getText() + "تيك اواي\n");
                     contentText.setText(contentText.getText() + "العنوان: " + DeliveryName + "\n");
                     contentText.setText(contentText.getText() + "قيمة التوصيل: " + DeliveryValue + "\n");
+                    sale.setTotalPrice(DeliveryValue + sale.getTotalPrice());
                     //contentText.setText(contentText.getText() + "____________________________\n");
                     DeliveryValue = null;
                     DeliveryName = null;
@@ -698,7 +744,7 @@ public class CashierController {
         if (borderpane.getChildren().contains(productsScrollPane)) {
             // If in products view, switch to categories view
             borderpane.setCenter(categoriesScrollPane);
-        } else {
+        } /*else {
             // If in categories view, switch to menu view
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
@@ -712,7 +758,7 @@ public class CashierController {
             } catch (IOException e) {
                 e.printStackTrace(); // Handle the exception appropriately
             }
-        }
+        }*/
     }
 
 
@@ -758,83 +804,7 @@ public class CashierController {
             e.printStackTrace(); // Handle the exception appropriately
         }
     }*/
-    public void handleReturnsView() {
-        // Create a TextInputDialog with both username and password fields
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Authentication");
-        dialog.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور");
 
-        // Set the button types
-        ButtonType loginButtonType = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-        // Create the username and password labels and fields
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("اسم المستخدم");
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("كلمة المرور");
-
-        grid.add(new Label("اسم المستخدم:"), 0, 0);
-        grid.add(usernameField, 1, 0);
-        grid.add(new Label("كلمة المرور:"), 0, 1);
-        grid.add(passwordField, 1, 1);
-
-        // Enable/Disable login button depending on whether a username was entered
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-        // Do some validation
-        usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
-
-        dialog.getDialogPane().setContent(grid);
-
-        // Convert the result to a username-password-pair when the login button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(usernameField.getText(), passwordField.getText());
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for the user's response
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(usernamePassword -> {
-            String username = usernamePassword.getKey();
-            String password = usernamePassword.getValue();
-
-            HelloController helloController = new HelloController();
-
-            // Validate the credentials (replace this with your authentication logic)
-            if (helloController.validateLogin(username, password)) {
-                // Load the Returns view
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Returns/returns.fxml"));
-                    Scene scene = new Scene(loader.load());
-                    scene.getStylesheets().add("/styles.css");
-
-                    Stage currentStage = (Stage) borderpane.getScene().getWindow();
-                    currentStage.setScene(scene);
-                    currentStage.setTitle("المرتجعات");
-                    currentStage.setResizable(false);
-                    currentStage.centerOnScreen();
-                } catch (IOException e) {
-                    e.printStackTrace(); // Handle the exception appropriately
-                }
-            } else {
-                // Incorrect credentials, show an alert or take appropriate action
-                Alert alert = new Alert(Alert.AlertType.ERROR, "خطأ في اسم المستخدم وكلمة المرور", ButtonType.OK);
-                alert.showAndWait();
-            }
-        });
-    }
 
     public boolean checkInputMoney() {
         if (paidTextField != null) {
@@ -867,132 +837,6 @@ public class CashierController {
         }
     }
 
-    public void handleAddWorker(){
-        // Create a TextInputDialog with both username and password fields
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Authentication");
-        dialog.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور");
-
-        // Set the button types
-        ButtonType loginButtonType = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-        // Create the username and password labels and fields
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("اسم المستخدم");
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("كلمة المرور");
-
-        grid.add(new Label("اسم المستخدم:"), 0, 0);
-        grid.add(usernameField, 1, 0);
-        grid.add(new Label("كلمة المرور:"), 0, 1);
-        grid.add(passwordField, 1, 1);
-
-        // Enable/Disable login button depending on whether a username was entered
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-        // Do some validation
-        usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
-
-        dialog.getDialogPane().setContent(grid);
-
-        // Convert the result to a username-password-pair when the login button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(usernameField.getText(), passwordField.getText());
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for the user's response
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(usernamePassword -> {
-            String username = usernamePassword.getKey();
-            String password = usernamePassword.getValue();
-
-            HelloController helloController = new HelloController();
-
-            // Validate the credentials (replace this with your authentication logic)
-            if (helloController.validateLogin(username, password)) {
-                // Create a TextInputDialog with both username and password fields
-                Dialog<Pair<String, String>> dialog1 = new Dialog<>();
-                dialog1.setTitle("تسجيل عامل جديد");
-                dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور");
-
-                // Set the button types
-                ButtonType loginButtonType1 = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);
-                dialog1.getDialogPane().getButtonTypes().addAll(loginButtonType1, ButtonType.CANCEL);
-
-                // Create the username and password labels and fields
-                GridPane grid1 = new GridPane();
-                grid1.setHgap(10);
-                grid1.setVgap(10);
-                grid1.setPadding(new Insets(20, 150, 10, 10));
-
-                TextField usernameField1 = new TextField();
-                usernameField1.setPromptText("اسم المستخدم");
-                PasswordField passwordField1 = new PasswordField();
-                passwordField1.setPromptText("كلمة المرور");
-
-                grid1.add(new Label("اسم المستخدم:"), 0, 0);
-                grid1.add(usernameField1, 1, 0);
-                grid1.add(new Label("كلمة المرور:"), 0, 1);
-                grid1.add(passwordField1, 1, 1);
-
-                // Enable/Disable login button depending on whether a username was entered
-                Node loginButton1 = dialog1.getDialogPane().lookupButton(loginButtonType1);
-                loginButton1.setDisable(true);
-
-                // Do some validation
-                usernameField1.textProperty().addListener((observable, oldValue, newValue) -> {
-                    loginButton1.setDisable(newValue.trim().isEmpty());
-                });
-
-                dialog1.getDialogPane().setContent(grid1);
-
-                // Convert the result to a username-password-pair when the login button is clicked
-                dialog1.setResultConverter(dialogButton -> {
-                    if (dialogButton == loginButtonType1) {
-                        return new Pair<>(usernameField1.getText(), passwordField1.getText());
-                    }
-                    return null;
-                });
-
-                // Show the dialog and wait for the user's response
-                Optional<Pair<String, String>> result1 = dialog1.showAndWait();
-
-                result1.ifPresent(usernamePassword1 -> {
-                    String username1 = usernamePassword1.getKey();
-                    String password1 = usernamePassword1.getValue();
-
-                    //add worker
-                    Workers workers = new Workers(username1, password1);
-                    if (workers.addWorker(username1, password1)) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم تسجيل العامل بنجاح", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                    else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "لم يتم تسجيل العامل بنجاح", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                });
-
-            }
-            else{
-                Alert alert = new Alert(Alert.AlertType.ERROR, "خطأ في اسم المستخدم وكلمة مرور الادمن", ButtonType.OK);
-                alert.showAndWait();
-            }
-        });
-    }
     public void checkCloseShift()
     {
         {
@@ -1100,12 +944,14 @@ public class CashierController {
                     shift.setEndLocalDate(LocalDate.now());
                     shift.setEndLocalTime(LocalTime.now());
                     shift.setTotalMoney(Double.parseDouble(textField.getText()));
+                    shift.setTotal(0.0);
                     shift.setUsername(username1);
                     if(shift.editShift(shift, usernameField1.getText(), Integer.parseInt(shiftNumber.getText())))
                     {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم غلق الوردية ", ButtonType.OK);
                         alert.showAndWait();
                         shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
+                        switchToMenuView();
                         //shiftNumber.setText(String.valueOf(shift.getId()));
                     } else if (!shift.editShift(shift, usernameField1.getText(), Integer.parseInt(shiftNumber.getText()))) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "لا يوجد وردية ", ButtonType.OK);
@@ -1121,86 +967,28 @@ public class CashierController {
 
         }
     }
-    public void checkOpenShift(){
-        {
-            // Create a TextInputDialog with both username and password fields
-            Dialog<Pair<String, String>> dialog1 = new Dialog<>();
-            dialog1.setTitle("فتح شيفت جديد");
-            dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور للعامل");
+    public void switchToMenuView()
+    {
+        try {
+            // Load the FXML file for the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Menu/Menu.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add("/styles.css");
 
-            // Set the button types
-            ButtonType loginButtonType1 = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);
-            dialog1.getDialogPane().getButtonTypes().addAll(loginButtonType1, ButtonType.CANCEL);
+            // Get the current stage
+            Stage currentStage = (Stage) borderpane.getScene().getWindow();
 
-            // Create the username and password labels and fields
-            GridPane grid1 = new GridPane();
-            grid1.setHgap(10);
-            grid1.setVgap(10);
-            grid1.setPadding(new Insets(20, 150, 10, 10));
+            // Set the new scene on the current stage
+            currentStage.setScene(scene);
+            currentStage.setTitle("Menu");
+            currentStage.setResizable(false);
+            //currentStage.setFullScreen(true);
+            currentStage.centerOnScreen();
 
-            TextField usernameField1 = new TextField();
-            usernameField1.setPromptText("اسم المستخدم");
-            PasswordField passwordField1 = new PasswordField();
-            passwordField1.setPromptText("كلمة المرور");
-
-            grid1.add(new Label("اسم المستخدم:"), 0, 0);
-            grid1.add(usernameField1, 1, 0);
-            grid1.add(new Label("كلمة المرور:"), 0, 1);
-            grid1.add(passwordField1, 1, 1);
-
-            // Enable/Disable login button depending on whether a username was entered
-            Node loginButton1 = dialog1.getDialogPane().lookupButton(loginButtonType1);
-            loginButton1.setDisable(true);
-
-            // Do some validation
-            usernameField1.textProperty().addListener((observable, oldValue, newValue) -> {
-                loginButton1.setDisable(newValue.trim().isEmpty());
-            });
-
-            dialog1.getDialogPane().setContent(grid1);
-
-            // Convert the result to a username-password-pair when the login button is clicked
-            dialog1.setResultConverter(dialogButton -> {
-                if (dialogButton == loginButtonType1) {
-                    return new Pair<>(usernameField1.getText(), passwordField1.getText());
-                }
-                return null;
-            });
-
-            // Show the dialog and wait for the user's response
-            Optional<Pair<String, String>> result1 = dialog1.showAndWait();
-
-            result1.ifPresent(usernamePassword1 -> {
-                String username1 = usernamePassword1.getKey();
-                String password1 = usernamePassword1.getValue();
-
-                //add worker
-                Workers workers = new Workers(username1, password1);
-                if (workers.authenticateWorker(username1, password1)) {
-                    Shift shift = new Shift();
-                    shift.setUsername(username1);
-                    shift.setBeginLocalDate(LocalDate.now());
-                    shift.setBeginLocalTime(LocalTime.now());
-                    shift.setId(shift.getLatestShiftId());
-                    if(shift.addShift(shift)) {
-                        shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم فتح الوردية ", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                    else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "هذا المستخدم له وردية لم تغلق من فضلك اغلق الوردية قبل بدأ وردية جديدة", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                }
-                else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "خطأ في اسم المستخدم وكلمة المرور", ButtonType.OK);
-                    alert.showAndWait();
-                }
-            });
-
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
         }
     }
-
     public void handleDelivery() {
         Dialog<Pair<String, Double>> dialog = new Dialog<>();
         dialog.setTitle("الدليفري");
@@ -1273,6 +1061,7 @@ public class CashierController {
         if (result != null) {
             DeliveryName = result.getKey();
             DeliveryValue = result.getValue();
+
         }
     }
 

@@ -10,6 +10,12 @@ public class Admins {
 
     // Constructors, getters, setters, etc.
 
+
+    public Admins(String username, String password) {
+        this.username = username;
+        Password = password;
+    }
+
     public Admins(String id, String username, String password) {
         this.id = id;
         this.username = username;

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="borderPane" maxHeight="609.0" maxWidth="931.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Reports.ReportsController">
+<BorderPane fx:id="borderPane" maxHeight="743.0" maxWidth="1366.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Reports.ReportsController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0" BorderPane.alignment="CENTER">
          <children>
@@ -67,9 +67,9 @@
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="509.0" prefWidth="606.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="600.0" prefWidth="888.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="344.0">
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="1076.0">
                <children>
                   <Label text="عرض الورديات" textFill="RED">
                      <font>
@@ -99,13 +99,13 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="237.0" prefWidth="662.0">
                <children>
-                  <TableView fx:id="tableView" prefHeight="237.0" prefWidth="644.0">
+                  <TableView fx:id="tableView" prefHeight="237.0" prefWidth="1077.0">
                     <columns>
-                      <TableColumn fx:id="Dorg" prefWidth="117.0" text="مبلغ نهاية الشيفت" />
-                      <TableColumn fx:id="EndTime" prefWidth="147.0" text="توقيت الانتهاء" />
-                        <TableColumn fx:id="StartTime" prefWidth="158.0" text="توقيت البدأ" />
-                        <TableColumn fx:id="ShiftNumber" minWidth="0.0" prefWidth="59.0" text="رقم الوردية" />
-                        <TableColumn fx:id="WorkerName" prefWidth="159.0" text="اسم العامل" />
+                      <TableColumn fx:id="Dorg" prefWidth="125.0" text="مبلغ نهاية الشيفت" />
+                      <TableColumn fx:id="EndTime" prefWidth="376.0" text="توقيت الانتهاء" />
+                        <TableColumn fx:id="StartTime" prefWidth="221.0" text="توقيت البدأ" />
+                        <TableColumn fx:id="ShiftNumber" minWidth="0.0" prefWidth="63.0" text="رقم الوردية" />
+                        <TableColumn fx:id="WorkerName" prefWidth="291.0" text="اسم العامل" />
                     </columns>
                   </TableView>
                </children></HBox>

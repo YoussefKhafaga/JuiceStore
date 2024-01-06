@@ -1,6 +1,7 @@
 package com.example.store;
 
 import com.example.store.GUI.Cashier.CashierController;
+import com.example.store.Sales.GetSalesDocument;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
@@ -24,6 +25,7 @@ public class Shift {
     private LocalTime endLocalTime;
     private Double totalMoney;
     private Integer id;
+    private Double total;
 
     public Shift(String username, LocalDate beginLocalDate, LocalTime beginLocalTime, LocalDate endLocalDate, LocalTime endLocalTime, Double totalMoney) {
         this.username = username;
@@ -33,7 +35,7 @@ public class Shift {
         this.endLocalTime = endLocalTime;
         this.totalMoney = totalMoney;
     }
-    public Shift(String username, LocalDate beginLocalDate, LocalTime beginLocalTime, LocalDate endLocalDate, LocalTime endLocalTime, Double totalMoney ,Integer id) {
+    public Shift(String username, LocalDate beginLocalDate, LocalTime beginLocalTime, LocalDate endLocalDate, LocalTime endLocalTime, Double totalMoney ,Integer id, Double total) {
         this.username = username;
         this.id = id;
         this.beginLocalDate = beginLocalDate;
@@ -41,6 +43,15 @@ public class Shift {
         this.endLocalDate = endLocalDate;
         this.endLocalTime = endLocalTime;
         this.totalMoney = totalMoney;
+        this.total = total;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public Integer getId() {
@@ -125,7 +136,8 @@ public class Shift {
                         .append("beginLocalTime", shift.getBeginLocalTime() != null ? shift.getBeginLocalTime().toString() : null)
                         .append("endLocalDate", shift.getEndLocalDate() != null ? shift.getEndLocalDate().toString() : null)
                         .append("endLocalTime", shift.getEndLocalTime() != null ? shift.getEndLocalTime().toString() : null)
-                        .append("totalMoney", shift.getTotalMoney());
+                        .append("totalMoney", shift.getTotalMoney())
+                        .append("total", 0.0);
                 shiftsCollection.insertOne(shiftDocument);
                 return true;
             }
@@ -142,7 +154,8 @@ public class Shift {
                     .append("beginLocalTime", shift.getBeginLocalTime() != null ? shift.getBeginLocalTime().toString() : null)
                     .append("endLocalDate", shift.getEndLocalDate() != null ? shift.getEndLocalDate().toString() : null)
                     .append("endLocalTime", shift.getEndLocalTime() != null ? shift.getEndLocalTime().toString() : null)
-                    .append("totalMoney", shift.getTotalMoney());
+                    .append("totalMoney", shift.getTotalMoney())
+                    .append("total", 0.0);
 
             // Insert the document into the collection
             shiftsCollection.insertOne(shiftDocument);
@@ -164,16 +177,19 @@ public class Shift {
             MongoCollection<Document> shiftsCollection = database.getCollection("Shifts");
 
             // Create a filter based on username
-            Document filter = new Document("username", name)
-                    .append("id", shiftnum);
-            Document filter1 = new Document("id", shiftnum);
-            long shiftCount = shiftsCollection.countDocuments(filter1);
+            Document filterbynameandid = new Document("username", name).append("id", shiftnum);
+            Document filterbyid = new Document("id", shiftnum);
+            // if shift is not found return false
+            long shiftCount = shiftsCollection.countDocuments(filterbyid);
             if (shiftCount == 0) {
                 return false; // Shift not present, return false
             }
+
             // Create an update document
             Document updateDocument = new Document();
-
+            Shift editedshift= new Shift();
+            // latest shift
+            //editedshift = editedshift.getShiftByNumber(shiftnum);
             // Add non-null fields to the update document
             if (shift.getEndLocalDate() != null) {
                 updateDocument.append("endLocalDate", shift.getEndLocalDate().toString());
@@ -184,28 +200,31 @@ public class Shift {
             if (shift.getTotalMoney() != null) {
                 updateDocument.append("totalMoney", shift.getTotalMoney());
             }
+            GetSalesDocument getSalesDocument = new GetSalesDocument();
 
             // Exclude the "_id" field from the update
             updateDocument.remove("_id");
-
-            long shiftCount1 = shiftsCollection.countDocuments(filter);
+            // if the worker did not open a shift with his name and id and wants to close a shift
+            long shiftCount1 = shiftsCollection.countDocuments(filterbynameandid);
             if(shiftCount1 == 0)
             {
-                Shift shift1 = new Shift();
-                shift1 = shift1.getShiftByNumber(shiftnum);
-                updateDocument.append("id", shift1.getId() + 1);
+                Shift latestshift = new Shift();
+                latestshift = latestshift.getShiftByNumber(shiftnum);
+                updateDocument.append("id", latestshift.getId() + 1);
                 updateDocument.append("username", shift.getUsername());
-                updateDocument.append("beginLocalDate", shift1.endLocalDate.toString());
-                updateDocument.append("beginLocalTime", shift1.endLocalTime.toString());
+                updateDocument.append("beginLocalDate", latestshift.endLocalDate.toString());
+                updateDocument.append("beginLocalTime", latestshift.endLocalTime.toString());
                 updateDocument.append("endLocalDate", shift.endLocalDate.toString());
                 updateDocument.append("endLocalTime", shift.endLocalTime.toString());
                 updateDocument.append("totalMoney", shift.totalMoney);
                 shiftsCollection.insertOne(updateDocument);
                 return true;
             }
-
             // Perform the update operation
-            shiftsCollection.updateOne(filter, new Document("$set", updateDocument));
+            shiftsCollection.updateOne(filterbynameandid, new Document("$set", updateDocument));
+            editedshift = getShiftByNumber(getLatestShiftId());
+            updateDocument.append("total", getSalesDocument.getTotalSummaryTime(editedshift.getBeginLocalDate(), editedshift.getEndLocalDate(), editedshift.getBeginLocalTime(), editedshift.getEndLocalTime()));
+            shiftsCollection.updateOne(filterbynameandid, new Document("$set", updateDocument));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,7 +270,8 @@ public class Shift {
                     endLocalDate,
                     endLocalTime,
                     result.getDouble("totalMoney"),
-                    result.getInteger("id")
+                    result.getInteger("id"),
+                    result.getDouble("total")
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,7 +370,8 @@ public class Shift {
                         endLocalDate,
                         endLocalTime,
                         result.getDouble("totalMoney"),
-                        result.getInteger("id")
+                        result.getInteger("id"),
+                        result.getDouble("total")
                 );
                 shifts.add(shift);
             }

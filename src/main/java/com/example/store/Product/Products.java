@@ -8,7 +8,7 @@ public class Products {
     private Double productPrice = 0.0;
     private String category = "";
     private String description = "";
-    private Integer productQuantity = 0;
+    private Double productQuantity = 0.0;
 
     // Constructors, getters, setters, etc.
 
@@ -34,7 +34,7 @@ public class Products {
         this.description = description;
     }
 
-    public Products(String productName, Double productPrice, Integer productQuantity) {
+    public Products(String productName, Double productPrice, Double productQuantity) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
@@ -52,7 +52,7 @@ public class Products {
     public static Products fromDocument(Document document) {
         String productName = document.getString("productName");
         double productPrice = document.getDouble("productPrice");
-        int productQuantity = document.getInteger("productQuantity"); // Corrected field name
+        double productQuantity = document.getDouble("productQuantity"); // Corrected field name
 
         return new Products(productName, productPrice, productQuantity);
     }
@@ -102,11 +102,11 @@ public class Products {
         this.productPrice = price;
     }
 
-    public Integer getProductQuantity() {
+    public Double getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(Integer productQuantity) {
+    public void setProductQuantity(Double productQuantity) {
         this.productQuantity = productQuantity;
     }
 }

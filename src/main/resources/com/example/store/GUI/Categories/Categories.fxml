@@ -5,31 +5,32 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorpane" maxHeight="400.0" maxWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Categories.AddCategories">
+<AnchorPane fx:id="anchorpane" prefHeight="700.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Categories.AddCategories">
    <children>
-      <VBox prefHeight="332.0" prefWidth="299.0">
+      <VBox alignment="CENTER" prefHeight="332.0" prefWidth="683.0" spacing="40.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="اضافة نوع جديد" textAlignment="CENTER" textFill="RED">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets left="100.0" top="20.0" />
-               </padding>
-            </Label>
-            <HBox prefHeight="216.0" prefWidth="300.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="اضافة نوع جديد" textAlignment="CENTER" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets left="100.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="206.0" prefWidth="683.0" spacing="20.0">
                <children>
                   <TextField fx:id="categoryNameTextField">
                      <HBox.margin>
-                        <Insets left="20.0" top="100.0" />
+                        <Insets top="100.0" />
                      </HBox.margin>
                   </TextField>
                   <Label text="اسم النوع الجديد">
                      <HBox.margin>
-                        <Insets left="20.0" top="100.0" />
+                        <Insets top="100.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -41,8 +42,7 @@
             </Button>
          </children>
       </VBox>
-      <Button fx:id="BackButton" layoutX="274.0" layoutY="339.0" mnemonicParsing="false" text="الرجوع" />
-      <VBox layoutX="300.0" prefHeight="332.0" prefWidth="300.0">
+      <VBox alignment="CENTER" layoutX="683.0" prefHeight="396.0" prefWidth="683.0" spacing="40.0">
          <children>
             <Label text="تعديل او الغاء النوع" textFill="RED">
                <font>
@@ -55,9 +55,9 @@
                   <Insets left="100.0" top="20.0" />
                </padding>
             </Label>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="comboBox" prefWidth="150.0">
+                  <ComboBox fx:id="comboBox" prefWidth="250.0">
                      <HBox.margin>
                         <Insets left="20.0" top="80.0" />
                      </HBox.margin>
@@ -68,9 +68,9 @@
                      </HBox.margin>
                   </Label>
                </children></HBox>
-            <HBox prefHeight="216.0" prefWidth="300.0">
+            <HBox alignment="CENTER" prefHeight="216.0" prefWidth="300.0">
                <children>
-                  <TextField fx:id="categoryNameTextFieldeditordelete">
+                  <TextField fx:id="categoryNameTextFieldeditordelete" prefWidth="250.0">
                      <HBox.margin>
                         <Insets left="20.0" top="80.0" />
                      </HBox.margin>
@@ -82,7 +82,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox prefHeight="58.0" prefWidth="300.0">
+            <HBox alignment="CENTER" prefHeight="58.0" prefWidth="300.0" spacing="50.0">
                <children>
                   <Button fx:id="deleteButton" mnemonicParsing="false" text="الغاء النوع">
                      <HBox.margin>
@@ -98,5 +98,10 @@
             </HBox>
          </children>
       </VBox>
+      <HBox alignment="CENTER" layoutX="-1.0" layoutY="396.0" prefHeight="100.0" prefWidth="1366.0">
+         <children>
+            <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

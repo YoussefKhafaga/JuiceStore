@@ -15,7 +15,10 @@ import org.bson.Document;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -33,23 +36,30 @@ public class ReturnsController {
     @FXML
     private Button BackButton;
     Document saleDocument;
+    @FXML
+    private Button enterBoth;
 
     private boolean bothValuesEntered = false;
 
     public void initialize() {
+        enterBoth.setOnAction(actionEvent -> {
+            checkBothValuesEntered();
+            if (bothValuesEntered) {
+                fetchAndDisplaySale();
+            }
+            bothValuesEntered = false;
+        });
         BackButton.setOnAction(actionEvent -> {
-            switchToCashierView();
+            switchToHelloView();
         });
         // Set up action for DeleteSaleButton click
         DeleteSaleButton.setOnAction(event -> onDeleteSaleButtonClick());
         // Add listener to DateSelector
-        DateSelector.valueProperty().addListener((observable, oldValue, newValue) -> {
+        /*DateSelector.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Check if both DateSelector and saleId have values
             checkBothValuesEntered();
             // If both values are entered, fetch and display the sale
-            if (bothValuesEntered) {
-                fetchAndDisplaySale();
-            }
+
         });
 
         // Add listener to saleId
@@ -57,12 +67,26 @@ public class ReturnsController {
             // Check if both DateSelector and saleId have values
             checkBothValuesEntered();
             // If both values are entered, fetch and display the sale
-            if (bothValuesEntered) {
-                fetchAndDisplaySale();
-            }
-        });
+        });*/
     }
 
+    public void switchToHelloView()
+    {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Login/hello-view.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            Stage currentStage = (Stage) anchorpane.getScene().getWindow();
+            currentStage.setScene(scene);
+            currentStage.setTitle("Menu");
+            currentStage.setResizable(false);
+            //currentStage.setMaximized(true);
+            currentStage.centerOnScreen();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void onDeleteSaleButtonClick() {
         if (saleDocument != null) {
             // Implement your delete logic here
@@ -128,14 +152,21 @@ public class ReturnsController {
 
     private VBox createSaleDetailsUI(Document saleDocument) {
         VBox saleDetailsVBox = new VBox();
+        saleDetailsVBox.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
 
+        // Set the font size for the VBox
+        saleDetailsVBox.setStyle("-fx-font-size: 18;");
         // Display sale ID
         Label saleIdLabel = new Label("رقم العملية: " + saleDocument.getInteger("id"));
+        saleIdLabel.setWrapText(true); // Enable text wrapping
         saleDetailsVBox.getChildren().add(saleIdLabel);
         saleDetailsVBox.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
 
         // Display sale date
-        Label saleDateLabel = new Label("تاريخ العملية: " + saleDocument.getDate("saleDate"));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("ar"));
+        String formattedDate = saleDocument.getDate("saleDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter);
+        Label saleDateLabel = new Label("تاريخ العملية: " + formattedDate);
+        saleDateLabel.setWrapText(true); // Enable text wrapping
         saleDetailsVBox.getChildren().add(saleDateLabel);
 
         // Display products
@@ -143,7 +174,12 @@ public class ReturnsController {
         for (Document product : products) {
             Label productNameLabel = new Label("اسم المنتج: " + product.getString("productName"));
             Label productPriceLabel = new Label("سعر المنتج: " + product.getDouble("productPrice"));
-            Label quantityLabel = new Label("الكمية: " + product.getInteger("quantity"));
+            Label quantityLabel = new Label("الكمية: " + product.getDouble("quantity"));
+
+            // Enable text wrapping for each label
+            productNameLabel.setWrapText(true);
+            productPriceLabel.setWrapText(true);
+            quantityLabel.setWrapText(true);
 
             // Add product details to VBox
             saleDetailsVBox.getChildren().addAll(productNameLabel, productPriceLabel, quantityLabel);
@@ -157,11 +193,17 @@ public class ReturnsController {
         Label totalPaidLabel = new Label("المدفوع: " + saleDocument.getDouble("totalPaid"));
         Label remainingLabel = new Label("الباقي: " + saleDocument.getDouble("remaining"));
 
+        // Enable text wrapping for each label
+        totalPriceLabel.setWrapText(true);
+        totalPaidLabel.setWrapText(true);
+        remainingLabel.setWrapText(true);
+
         // Add remaining details to VBox
         saleDetailsVBox.getChildren().addAll(totalPriceLabel, totalPaidLabel, remainingLabel);
 
         return saleDetailsVBox;
     }
+
     public void createAlertBox(String msg, String type, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(type);

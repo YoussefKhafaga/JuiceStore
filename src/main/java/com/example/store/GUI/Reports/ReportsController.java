@@ -2,6 +2,7 @@ package com.example.store.GUI.Reports;
 
 
 import com.example.store.Sales.GetSalesDocument;
+import com.example.store.Sales.Sales;
 import com.example.store.Sales.TotalSummary;
 import com.example.store.Shift;
 import javafx.collections.FXCollections;
@@ -56,6 +57,8 @@ public class ReportsController {
     private TableColumn <Shift, String> EndTime;
     @FXML
     private TableColumn <Shift, Double> Dorg;
+    //@FXML
+    //private TableColumn <Shift, Double> totalSalesColumn;
     ObservableList<Shift> shiftstable = FXCollections.observableArrayList();
     public void initialize()
     {
@@ -64,6 +67,7 @@ public class ReportsController {
         StartTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("beginLocalTime"));
         EndTime.setCellValueFactory(new PropertyValueFactory<Shift, String>("endLocalTime"));
         Dorg.setCellValueFactory(new PropertyValueFactory<Shift, Double>("totalMoney"));
+        //totalSalesColumn.setCellValueFactory(new PropertyValueFactory<Shift, Double>("total"));
         tableView.setItems(shiftstable);
         Submit.setOnAction(actionEvent -> {
             handleSubmitButton();
@@ -82,6 +86,10 @@ public class ReportsController {
         });
         BackButton.setOnAction(actionEvent -> {
             handleBackButton();
+        });
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            handleSubmitButton();
+            // You can perform any actions you want based on the selected date change
         });
     }
     public void checkExistingShift(Shift newShift) {
@@ -127,8 +135,8 @@ public class ReportsController {
     {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
-
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusDays(1), LocalDate.now());
+        LocalDate selectedDate = datePicker.getValue();
+        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusDays(1), selectedDate);
         //income.setText(String.valueOf(totalSummary.getTotalPaid()));
         //outcome.setText(String.valueOf(totalSummary.getRemaining()));
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
@@ -138,8 +146,8 @@ public class ReportsController {
     {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
-
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusWeeks(1), LocalDate.now());
+        LocalDate selectedDate = datePicker.getValue();
+        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusWeeks(1), selectedDate);
         //income.setText(String.valueOf(totalSummary.getTotalPaid()));
         //outcome.setText(String.valueOf(totalSummary.getRemaining()));
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
@@ -149,8 +157,8 @@ public class ReportsController {
     {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
-
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusMonths(1), LocalDate.now());
+        LocalDate selectedDate = datePicker.getValue();
+        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusMonths(1), selectedDate);
         //income.setText(String.valueOf(totalSummary.getTotalPaid()));
         //outcome.setText(String.valueOf(totalSummary.getRemaining()));
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));
@@ -160,8 +168,8 @@ public class ReportsController {
     {
         TotalSummary totalSummary = new TotalSummary();
         GetSalesDocument getSalesDocument = new GetSalesDocument();
-
-        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusYears(1), LocalDate.now());
+        LocalDate selectedDate = datePicker.getValue();
+        totalSummary = getSalesDocument.getTotalSummary(LocalDate.now().minusYears(1), selectedDate);
         //income.setText(String.valueOf(totalSummary.getTotalPaid()));
         //outcome.setText(String.valueOf(totalSummary.getRemaining()));
         netIncome.setText(String.valueOf(totalSummary.getTotalPrice()));

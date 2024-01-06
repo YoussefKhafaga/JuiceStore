@@ -40,7 +40,6 @@ public class AddSalesDocument {
 
 
             if (existingSale != null) {
-                // Sale with the same ID already exists, handle it if needed
             } else {
                 // Insert the document into the collection
                 Document newSaleDocument = new Document()

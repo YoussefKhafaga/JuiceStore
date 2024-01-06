@@ -6,20 +6,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="borderpane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
+<BorderPane fx:id="borderpane" maxHeight="700.0" prefHeight="693.0" prefWidth="1366.0" stylesheets="@../../../../../styles.CSS" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
    <right>
-      <VBox prefHeight="404.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="674.0" prefWidth="174.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="shiftNumber" textFill="RED">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                   <Label text="رقم الوردية">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children>
@@ -27,41 +27,52 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
+            <Button fx:id="CloseShift" mnemonicParsing="false" text="غلق الوردية">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
             <ImageView fitHeight="283.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../logo2.jpg" />
                </image>
                <VBox.margin>
-                  <Insets top="200.0" />
+                  <Insets top="80.0" />
                </VBox.margin>
             </ImageView>
-            <TextField fx:id="shadowTextField">
+            <TextField fx:id="shadowTextField" prefHeight="25.0" prefWidth="15.0">
                <VBox.margin>
-                  <Insets left="50.0" right="50.0" top="50.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </TextField>
             <Button fx:id="enterNumber" mnemonicParsing="false" text="ادخال">
                <VBox.margin>
-                  <Insets left="60.0" top="50.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
             </Button>
             <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع">
                <VBox.margin>
-                  <Insets left="60.0" top="50.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Button>
          </children>
       </VBox>
    </right>
    <left>
-      <VBox prefHeight="491.0" prefWidth="387.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="640.0" prefWidth="509.0" BorderPane.alignment="CENTER">
          <children>
             <TableView fx:id="tableView" prefHeight="290.0" prefWidth="255.0">
               <columns>
                   <TableColumn fx:id="deleteColumn" prefWidth="51.0" text="حذف" />
                   <TableColumn fx:id="productQuantity" prefWidth="65.0" text="الكمية" />
-                  <TableColumn fx:id="productPrice" prefWidth="57.0" text="السعر" />
-                  <TableColumn fx:id="productName" prefWidth="161.0" text="الصنف" />
+                  <TableColumn fx:id="productPrice" prefWidth="106.0" text="السعر" />
+                  <TableColumn fx:id="productName" prefWidth="276.0" text="الصنف" />
               </columns>
             </TableView>
             <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="263.0">
@@ -93,6 +104,9 @@
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Button>
                   <TextField fx:id="paidTextField">
                      <HBox.margin>
@@ -141,25 +155,24 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Button>
                   <Button fx:id="newOrderButton" mnemonicParsing="false" text="جديد">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Button>
                </children>
             </HBox>
+            <Button fx:id="Delivery" mnemonicParsing="false" text="ديلفري">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children></VBox>
    </left>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="75.0" prefWidth="683.0" spacing="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="Delivery" mnemonicParsing="false" text="ديلفري" />
-            <Button fx:id="Returns" mnemonicParsing="false" text="مرتجعات" />
-            <Button fx:id="OpenShift" mnemonicParsing="false" text="فتح الوردية" />
-            <Button fx:id="CloseShift" layoutX="325.0" layoutY="35.0" mnemonicParsing="false" text="غلق الوردية" />
-            <Button fx:id="AddWorker" mnemonicParsing="false" text="اضافة عامل جديد" />
-         </children>
-      </HBox>
-   </bottom>
 </BorderPane>

@@ -1,72 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorpane" maxHeight="357.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Login.HelloController">
+<AnchorPane fx:id="anchorpane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0" stylesheets="@../../../../../styles.CSS" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Login.HelloController">
    <children>
-      <ImageView fitHeight="422.0" fitWidth="357.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageView" fitHeight="715.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="666.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../../logo2.jpg" />
          </image>
       </ImageView>
-      <VBox layoutX="357.0" layoutY="25.0" prefHeight="332.0" prefWidth="243.0">
+      <VBox fx:id="vBox" alignment="CENTER" layoutX="700.0" layoutY="-2.0" prefHeight="700.0" prefWidth="666.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="700.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="243.0" visible="false">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="userNameTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Label alignment="CENTER_RIGHT" text="اسم المستخدم">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets top="50.0" />
-               </VBox.margin>
-            </HBox>
-            <Label text="الدخول للبرنامج" textFill="RED">
-               <VBox.margin>
-                  <Insets left="80.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="15.0" />
-               </font></Label>
-            <Button fx:id="startButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="الدخول">
-               <VBox.margin>
-                  <Insets left="80.0" top="10.0" />
-               </VBox.margin>
-            </Button>
-            <HBox alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="243.0" visible="false">
-               <children>
-                  <PasswordField fx:id="passwordTextField" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="120.0">
-                     <HBox.margin>
-                        <Insets right="45.0" />
-                     </HBox.margin>
-                  </PasswordField>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="كلمة السر">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
+                  <Button fx:id="startButton" mnemonicParsing="false" prefHeight="39.0" prefWidth="183.0" text="القائمة الرئيسية" textFill="RED">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
-            <ToggleButton fx:id="showPasswordToggle" mnemonicParsing="false" text="اظهار كلمة المرور" visible="false">
-               <VBox.margin>
-                  <Insets left="80.0" top="10.0" />
-               </VBox.margin></ToggleButton>
-            <Button fx:id="LoginButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="تسجيل الدخول" visible="false">
-               <VBox.margin>
-                  <Insets left="80.0" top="10.0" />
-               </VBox.margin>
-            </Button>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="addAdminButton" mnemonicParsing="false" prefHeight="39.0" prefWidth="183.0" text="اضافة ادمن" textFill="RED">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="AddWorker" mnemonicParsing="false" prefHeight="31.0" prefWidth="183.0" text="اضافة عامل" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="Returns" mnemonicParsing="false" prefHeight="31.0" prefWidth="183.0" text="مرتجعات" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

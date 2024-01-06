@@ -16,6 +16,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.setResizable(false);
+        //stage.setMaximized(true);
         //TODO stage.getIcons().add(new Image("logo2.jpg"));
         stage.show();
     }

@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import javafx.scene.control.Alert;
 import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,9 @@ public class AddAdminDocument {
 
     public static void main(String[] args) {
         // Connect to MongoDB server
+    }
+
+    public void addAdmin(String adminUsername, String adminPassword) {
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
 
             // Specify the database
@@ -25,37 +29,48 @@ public class AddAdminDocument {
             // Specify the collection
             MongoCollection<Document> adminsCollection = database.getCollection("Admins");
 
-            // Create a new admin document
-            String adminUsername = "Admin";
-            String adminPassword = "KMSHardPassword";
-
             // Check if an admin with the same username already exists
             Document existingAdmin = adminsCollection.find(Filters.eq("username", adminUsername)).first();
-
             if (existingAdmin != null) {
-                // Admin with the same username already exists, handle accordingly
-                System.out.println("الادمن بأسم " + adminUsername + " موجود بالفعل ");
-            } else {
-                // Generate a random salt for the admin
-                String adminSalt = generateSalt();
-
-                // Combine password with salt and hash using SHA-256
+                // Admin with the same username already exists
+                String storedPassword = existingAdmin.getString("password");
+                String adminSalt = existingAdmin.getString("salt");
                 String hashedAdminPassword = hashPassword(adminPassword, adminSalt);
+
+                if (hashedAdminPassword.equals(storedPassword)) {
+                    // Passwords match, show a message box
+                    // Display a message box
+                    createAlertBox("الادمن بأسم " + adminUsername + " موجود بالفعل", "تنبيه", Alert.AlertType.WARNING);
+                }
+                }
+            else {
+                // Generate a random salt for the admin
+                String adminSalt1 = generateSalt();
+                // Combine password with salt and hash using SHA-256
+                String hashedAdminPassword1 = hashPassword(adminPassword, adminSalt1);
 
                 // Insert the document into the collection
                 Document newAdminDocument = new Document()
                         .append("username", adminUsername)
-                        .append("password", hashedAdminPassword)
-                        .append("salt", adminSalt);
+                        .append("password", hashedAdminPassword1)
+                        .append("salt", adminSalt1);
 
                 adminsCollection.insertOne(newAdminDocument);
-
-                System.out.println("Admin document added successfully!");
+                createAlertBox("تم تسجيل الادمن" , "تأكيد", Alert.AlertType.INFORMATION);
+            }
+            System.out.println("Admin document added successfully!");
             }
 
-        } catch (Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void createAlertBox(String msg, String type, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(type);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
 
