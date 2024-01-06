@@ -66,7 +66,7 @@ public class GetSalesDocument {
         return totalSummary;
     }
 
-    public Double getTotalSummaryTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+    /*public Double getTotalSummaryTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
         try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
             var database = mongoClient.getDatabase("KhanMariaStore");
             var salesCollection = database.getCollection("Sales");
@@ -81,6 +81,42 @@ public class GetSalesDocument {
                             gte("saleDate", startDateTime),
                             lt("saleDate", endDateTime)
                     )),
+                    group(0.0,
+                            sum("totalPrice", "$totalPrice")
+                    )
+            );
+
+            // Combine the two lists
+            List<Bson> aggregationPipeline = new ArrayList<>();
+            aggregationPipeline.addAll(matchPipeline);
+
+            // Execute the aggregation pipeline
+            List<Document> aggregationResult = new ArrayList<>();
+            salesCollection.aggregate(aggregationPipeline)
+                    .allowDiskUse(true)
+                    .into(aggregationResult);
+
+            // Process the results
+            if (!aggregationResult.isEmpty()) {
+                return aggregationResult.get(0).getDouble("totalPrice");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0.0;
+    }
+*/
+
+    public Double getTotalByShift(int shiftNumber) {
+        try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            var database = mongoClient.getDatabase("KhanMariaStore");
+            var salesCollection = database.getCollection("Sales");
+
+            // Match documents by shift number
+            var matchPipeline = Arrays.asList(
+                    match(eq("shiftNumber", shiftNumber)),
                     group(0.0,
                             sum("totalPrice", "$totalPrice")
                     )

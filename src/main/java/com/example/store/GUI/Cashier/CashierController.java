@@ -215,6 +215,8 @@ public class CashierController {
         printButton.setOnAction(actionEvent -> {
             Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
                     Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
+            Shift shift1 = new Shift();
+            sale.setShiftnumber(shift1.getLatestShiftId());
             if (DeliveryValue != null || DeliveryName != null)
             {
                 printBill(sale, true);
@@ -278,6 +280,8 @@ public class CashierController {
         if (event.getText().equalsIgnoreCase("p")) {
             Sales sale = new Sales(generateUniqueId(), saleProducts, total, paid,
                     Double.parseDouble(remainingLabel.getText()), LocalDate.now(), LocalTime.now());
+            Shift shift1 = new Shift();
+            sale.setShiftnumber(shift1.getLatestShiftId());
             if (DeliveryValue != null || DeliveryName != null)
             {
                 printBill(sale, true);

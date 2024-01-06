@@ -204,7 +204,7 @@ public class Shift {
             }
             if(shift.getTotal() == 0.0)
             {
-                updateDocument.append("total", getSalesDocument.getTotalSummaryTime(latestshift.getBeginLocalDate(), shift.getEndLocalDate(), latestshift.getBeginLocalTime(), shift.getEndLocalTime()));
+                updateDocument.append("total", getSalesDocument.getTotalByShift(shiftnum));
             }
 
             // Exclude the "_id" field from the update

@@ -16,6 +16,7 @@ public class Sales {
 
     private LocalDate saleDate;
     private LocalTime saleTime;
+    private Integer shiftnumber;
 
     public Sales(Integer id, List<Products> products, double totalPrice, double paid, double remaining, LocalDate saleDate, LocalTime saleTime) {
         this.id = id;
@@ -36,6 +37,14 @@ public class Sales {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getShiftnumber() {
+        return shiftnumber;
+    }
+
+    public void setShiftnumber(Integer shiftnumber) {
+        this.shiftnumber = shiftnumber;
     }
 
     public List<Products> getProducts() {

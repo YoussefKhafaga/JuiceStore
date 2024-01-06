@@ -49,7 +49,8 @@ public class AddSalesDocument {
                         .append("totalPaid", sale.getPaid())
                         .append("remaining", sale.getRemaining())
                         .append("saleDate", sale.getSaleDate())
-                        .append("saleTime", sale.getSaleTime());
+                        .append("saleTime", sale.getSaleTime())
+                        .append("shiftNumber", sale.getShiftnumber());
 
                 salesDocument.insertOne(newSaleDocument);
 
