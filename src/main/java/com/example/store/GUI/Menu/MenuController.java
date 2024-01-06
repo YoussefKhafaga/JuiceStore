@@ -172,21 +172,18 @@ public class MenuController {
         }
     }
     private void handleCloseRequest(WindowEvent event) {
-        // You can put your decision-making logic here, such as showing a confirmation dialog
+        // Display a confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("رسالة تأكيد");
         alert.setHeaderText("متأكد انك تريد الخروج ؟");
         alert.setContentText("يجب عليك غلق الشيفت اولا");
 
+        // Show the confirmation dialog and consume the event unconditionally
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Consume the event to prevent the window from closing
-            event.consume();
-        } else {
-            // Close the window or perform other actions
-            // Platform.exit();  // Uncomment this line if you want to close the window even on cancel
-        }
+        event.consume();
     }
+
+
 
 
 

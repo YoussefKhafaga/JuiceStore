@@ -45,9 +45,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static javafx.css.SizeUnits.MM;
 import static javafx.css.SizeUnits.S;
@@ -504,16 +502,19 @@ public class CashierController {
         gramButton.setOnAction(e -> handleGramButtonClick(textField));
 
         // Add the gramButton to the grid
-        buttonsGrid.add(gramButton, 2, 4);
+        // Add the gramButton to the grid
+        buttonsGrid.add(gramButton, 0, 6); // Adjusted row to 0
+
         // Add digit buttons to the grid
         for (int i = 0; i < 10; i++) {
-            buttonsGrid.add(digitButtons[i], i % 3, i / 3);
+            buttonsGrid.add(digitButtons[i], i % 3, i / 3); // Adjusted rows
         }
 
         // Add fraction buttons to the grid
         for (int i = 0; i < 5; i++) {
-            buttonsGrid.add(fractionButtons[i], i % 3, i / 3 + 3);
+            buttonsGrid.add(fractionButtons[i], i % 3, i / 3 + 4); // Adjusted rows
         }
+
 
         // Wrap the GridPane with an HBox and center it
         HBox buttonsHBox = new HBox(buttonsGrid);
@@ -569,6 +570,7 @@ public class CashierController {
         return (Button) borderpane.lookup("#" + "Button" + enteredNumber);
     }
     public ScrollPane createCategories(List<String> categories, int numberOfCategories, int columns) {
+        categories.sort(String::compareToIgnoreCase);
         // Create a new GridPane
         GridPane gridPane = new GridPane();
         gridPane.setHgap(20); // Set horizontal gap between buttons
@@ -607,7 +609,14 @@ public class CashierController {
 
         return scrollPane;
     }
-    public ScrollPane createCategoryProducts(List<Products> productList, int numberOfProducts, int columns) {
+    public ScrollPane createCategoryProducts(
+            List<Products> productList,
+            int numberOfProducts,
+            int columns) {
+        Comparator<Products> nameComparator = Comparator.comparing(Products::getProductName);
+        // Sort the productList using the provided comparator
+        Collections.sort(productList, nameComparator);
+
         // Create a new GridPane
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10); // Set horizontal gap between buttons
@@ -617,25 +626,16 @@ public class CashierController {
         // Add buttons to the GridPane
         int columnIndex = 0;
         int rowIndex = 0;
-        for (int i = 0; i < numberOfProducts; i++) {
+        for (int i = 0; i < numberOfProducts && i < productList.size(); i++) {
             Button button = new Button();
-            button.setId("Button" + (i+1));
+            button.setId("Button" + (i + 1));
             Products product = productList.get(i);
             button.setText((i + 1) + " " + product.getProductName());
             button.setWrapText(true);
             button.setOnAction(actionEvent -> pressProductButton(button));
-            // Check the text content and set the button color and border radius accordingly
-            if (button.getText().contains("كبير")) {
-                button.setStyle("-fx-background-color: lightcoral; -fx-background-radius: 12px; -fx-font-size: 14px;");
-            } else if (button.getText().contains("وسط")) {
-                button.setStyle("-fx-background-color: darkorange; -fx-background-radius: 12px; -fx-font-size: 14px;");
-            } else if (button.getText().contains("صغير")) {
-                button.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 12px; -fx-font-size: 14px;");
-            }
-            else {
-                button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px; -fx-font-size: 14px;");
-            }
 
+            // Check the text content and set the button color and border radius accordingly
+            customizeProductButton(button, product);
 
             // Add the button to the GridPane at the specified column and row
             gridPane.add(button, columnIndex, rowIndex);
@@ -659,6 +659,19 @@ public class CashierController {
         scrollPane.setFocusTraversable(true);
         scrollPane.setId("createCategoriesProductsScrollPane");
         return scrollPane;
+    }
+
+    // Helper method to customize button based on product details
+    private void customizeProductButton(Button button, Products product) {
+        if (product.getProductName().contains("كبير")) {
+            button.setStyle("-fx-background-color: lightcoral; -fx-background-radius: 12px; -fx-font-size: 14px;");
+        } else if (product.getProductName().contains("وسط")) {
+            button.setStyle("-fx-background-color: darkorange; -fx-background-radius: 12px; -fx-font-size: 14px;");
+        } else if (product.getProductName().contains("صغير")) {
+            button.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 12px; -fx-font-size: 14px;");
+        } else {
+            button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px; -fx-font-size: 14px;");
+        }
     }
     public void printBill(Sales sale, boolean delivery) {
         String printerName = "XP-80C";
