@@ -1,11 +1,13 @@
 package com.example.store.GUI.Cashier;
 
+import com.example.store.Admin.AddAdminDocument;
 import com.example.store.GUI.Login.HelloController;
 import com.example.store.GUI.Menu.MenuController;
 import com.example.store.Shift;
 import com.example.store.Workers;
 import com.sun.javafx.print.PrintHelper;
 import com.sun.javafx.print.Units;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.print.*;
@@ -34,6 +36,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -100,6 +103,7 @@ public class CashierController {
     private Double DeliveryValue = null;
     @FXML
     public Label shiftNumber;
+
     public void initialize() {
         DeliveryName = null;
         DeliveryValue = null;
@@ -224,6 +228,7 @@ public class CashierController {
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
                 saleProducts.clear();
+                paidTextField.clear();
             }
             else{
                 if (checkInputMoney())
@@ -239,6 +244,7 @@ public class CashierController {
                     borderpane.setCenter(categoriesScrollPane);
                     remainingLabel.setText(String.valueOf(0.0));
                     saleProducts.clear();
+                    paidTextField.clear();
                 }
             }
         });
@@ -285,6 +291,7 @@ public class CashierController {
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
                 saleProducts.clear();
+                paidTextField.clear();
             }
             else{
                 if (checkInputMoney())
@@ -301,6 +308,7 @@ public class CashierController {
                 borderpane.setCenter(categoriesScrollPane);
                 remainingLabel.setText(String.valueOf(0.0));
                 saleProducts.clear();
+                 paidTextField.clear();
             }
             }
         }
@@ -313,6 +321,7 @@ public class CashierController {
             borderpane.setCenter(categoriesScrollPane);
             remainingLabel.setText(String.valueOf(0.0));
             saleProducts.clear();
+            paidTextField.clear();
         }
     }
 
@@ -390,14 +399,18 @@ public class CashierController {
         ctrlPressed = false;
         paidTextField.requestFocus();
         Products product = new Products(products.getProductName(), products.getProductPrice(), quantity);
-        checkExistingSale(product);
+        if(!checkExistingSale(product)){
+
+        }
         saleProducts.add(product);
-        total += calculateTotal(product.getProductPrice(), quantity);
+        tableView.setItems(tableData);
+        tableView.refresh();
+        total = calculateTotal();
         totalPayment.setText(String.valueOf(total));
         borderpane.requestFocus();
     }
 
-    public void checkExistingSale(Products newProduct) {
+    public Boolean checkExistingSale(Products newProduct) {
         Products existingProduct = null;
         for (Products product : tableData) {
             if (product.getProductName().equals(newProduct.getProductName())) {
@@ -409,16 +422,22 @@ public class CashierController {
         if (existingProduct != null) {
             // If the item exists, update it
             existingProduct.setProductQuantity(newProduct.getProductQuantity());
+            totalPayment.setText(String.valueOf(calculateTotal()));
+            saleProducts.remove(existingProduct);
+            return true;
         } else {
             // If the item doesn't exist, add a new item
             tableData.add(newProduct);
+            return false;
         }
-        tableView.setItems(tableData);
-        tableView.refresh();
     }
 
-    private Double calculateTotal(double price, Double quantity) {
-        return (price * quantity);
+    private double calculateTotal() {
+        double total = 0.0;
+        for (Products product : tableData) {
+            total += product.getProductPrice() * product.getProductQuantity();
+        }
+        return Double.parseDouble(String.format("%.2f", total));
     }
 
     private String showCustomInputDialog(String productName) {
@@ -477,7 +496,11 @@ public class CashierController {
         GridPane buttonsGrid = new GridPane();
         buttonsGrid.setHgap(10);
         buttonsGrid.setVgap(10);
+        Button gramButton = new Button("جرام");
+        gramButton.setOnAction(e -> handleGramButtonClick(textField));
 
+        // Add the gramButton to the grid
+        buttonsGrid.add(gramButton, 2, 4);
         // Add digit buttons to the grid
         for (int i = 0; i < 10; i++) {
             buttonsGrid.add(digitButtons[i], i % 3, i / 3);
@@ -505,6 +528,16 @@ public class CashierController {
 
         // Show the dialog and wait for the user's response
         return dialog.showAndWait().orElse(null);
+    }
+    private void handleGramButtonClick(TextField textField) {
+        try {
+            double currentValue = Double.parseDouble(textField.getText());
+            double gramValue = currentValue * 0.001;
+            textField.setText(String.valueOf(gramValue));
+        } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid number
+            e.printStackTrace();
+        }
     }
 
     private Button createFractionButton(String label, String value, TextField textField) {
@@ -679,7 +712,7 @@ public class CashierController {
                 // Append table content in a table format
                 for (Products product : tableData) {
                     contentText.setText(contentText.getText() +
-                            String.format("%s | %.2f | %.2f\n",
+                            String.format("%s | %.3f | %.2f\n",
                                     product.getProductName(), product.getProductQuantity()
                                     , product.getProductPrice()));
                     // Append the dynamically generated dashed line to contentText
@@ -836,6 +869,22 @@ public class CashierController {
             return false; // Return false for invalid input
         }
     }
+    private void handleCloseRequest(WindowEvent event) {
+        // You can put your decision-making logic here, such as showing a confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("رسالة تأكيد");
+        alert.setHeaderText("متأكد انك تريد الخروج ؟");
+        alert.setContentText("يجب عليك غلق الشيفت اولا");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            checkCloseShift();
+            Platform.exit();
+        } else {
+            // Consume the event to prevent the window from closing
+            event.consume();
+        }
+    }
 
     public void checkCloseShift()
     {
@@ -893,7 +942,8 @@ public class CashierController {
 
                 //add worker
                 Workers workers = new Workers(username1, password1);
-                if (workers.authenticateWorker(username1, password1)) {
+                AddAdminDocument adminDocument = new AddAdminDocument();
+                if (workers.authenticateWorker(username1, password1) || adminDocument.authenticateWorker(username1, password1)) {
                         // Create the custom input dialog
                         Dialog<String> dialog = new Dialog<>();
                         dialog.setTitle("ادخال مبلغ الدرج");
@@ -946,11 +996,11 @@ public class CashierController {
                     shift.setTotalMoney(Double.parseDouble(textField.getText()));
                     shift.setTotal(0.0);
                     shift.setUsername(username1);
-                    if(shift.editShift(shift, usernameField1.getText(), Integer.parseInt(shiftNumber.getText())))
+                    if(shift.editShift(shift, usernameField1.getText(), shift.getLatestShiftId()))
                     {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم غلق الوردية ", ButtonType.OK);
                         alert.showAndWait();
-                        shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
+                        //shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
                         switchToMenuView();
                         //shiftNumber.setText(String.valueOf(shift.getId()));
                     } else if (!shift.editShift(shift, usernameField1.getText(), Integer.parseInt(shiftNumber.getText()))) {
@@ -984,6 +1034,8 @@ public class CashierController {
             currentStage.setResizable(false);
             //currentStage.setFullScreen(true);
             currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(null);
+
 
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
@@ -1064,5 +1116,6 @@ public class CashierController {
 
         }
     }
+
 
 }

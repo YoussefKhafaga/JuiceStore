@@ -116,6 +116,7 @@ public class ReportsController {
             // Fetch shifts for the selected date and update the table
             Shift shift = new Shift();
             shifts = shift.getShiftsByDate(selectedDate);
+            tableView.getItems().clear();
             shiftstable.addAll(shifts);
             tableView.setItems(shiftstable);
             tableView.refresh();

@@ -20,6 +20,34 @@ public class AddAdminDocument {
         // Connect to MongoDB server
     }
 
+    public boolean authenticateWorker(String username, String password) {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            // Specify the database
+            MongoDatabase database = mongoClient.getDatabase("KhanMariaStore");
+
+            // Specify the collection
+            MongoCollection<Document> workersCollection = database.getCollection("Admins");
+
+            // Find the worker with the given username
+            Document workerDocument = workersCollection.find(Filters.eq("username", username)).first();
+
+            if (workerDocument != null) {
+                // Worker with the given username found, now check the password
+                String storedPasswordHash = workerDocument.getString("password");
+                String salt = workerDocument.getString("salt");
+                String hashedInputPassword = hashPassword(password, salt);
+
+                // Compare the stored hashed password with the input hashed password
+                if (storedPasswordHash.equals(hashedInputPassword)) {
+                    // Passwords match, authentication successful
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public void addAdmin(String adminUsername, String adminPassword) {
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
 

@@ -1,5 +1,6 @@
 package com.example.store.GUI.Menu;
 
+import com.example.store.Admin.AddAdminDocument;
 import com.example.store.GUI.Cashier.CashierController;
 import com.example.store.GUI.Login.HelloController;
 import com.example.store.Shift;
@@ -7,6 +8,7 @@ import com.example.store.Workers;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -18,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
@@ -116,6 +119,7 @@ public class MenuController {
             currentStage.setTitle("LogIn");
             currentStage.setResizable(false);
             currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(null);
 
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
@@ -137,6 +141,7 @@ public class MenuController {
             currentStage.setResizable(false);
             //currentStage.setMaximized(true);
             currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(null);
 
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
@@ -158,12 +163,31 @@ public class MenuController {
             //currentStage.setMaximized(true);
             //currentStage.setResizable(true);
             currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(event -> handleCloseRequest(event));
+
 
 
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
     }
+    private void handleCloseRequest(WindowEvent event) {
+        // You can put your decision-making logic here, such as showing a confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("رسالة تأكيد");
+        alert.setHeaderText("متأكد انك تريد الخروج ؟");
+        alert.setContentText("يجب عليك غلق الشيفت اولا");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Consume the event to prevent the window from closing
+            event.consume();
+        } else {
+            // Close the window or perform other actions
+            // Platform.exit();  // Uncomment this line if you want to close the window even on cancel
+        }
+    }
+
 
 
     /*public void switchToReportsView(){
@@ -225,6 +249,7 @@ public class MenuController {
             currentStage.setTitle("Categories");
             currentStage.setResizable(false);
             currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(null);
 
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
@@ -298,6 +323,7 @@ public class MenuController {
                     //currentStage.setResizable(true);
                     //currentStage.setMaximized(true);
                     currentStage.centerOnScreen();
+                    currentStage.setOnCloseRequest(null);
                 } catch (IOException e) {
                     e.printStackTrace(); // Handle the exception appropriately
                 }
@@ -363,7 +389,8 @@ public class MenuController {
 
                 //add worker
                 Workers workers = new Workers(username1, password1);
-                if (workers.authenticateWorker(username1, password1)) {
+                AddAdminDocument adminDocument = new AddAdminDocument();
+                if (workers.authenticateWorker(username1, password1) || adminDocument.authenticateWorker(username1, password1)) {
                     Shift shift = new Shift();
                     shift.setUsername(username1);
                     shift.setBeginLocalDate(LocalDate.now());
@@ -373,10 +400,6 @@ public class MenuController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم فتح الوردية ", ButtonType.OK);
                         alert.showAndWait();
                         switchToCashierView();
-                    }
-                    else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "هذا المستخدم له وردية لم تغلق من فضلك اغلق الوردية قبل بدأ وردية جديدة", ButtonType.OK);
-                        alert.showAndWait();
                     }
                 }
                 else{
