@@ -4,6 +4,8 @@ import com.example.store.GUI.Cashier.CashierController;
 import com.example.store.Sales.GetSalesDocument;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.bson.Document;
 
 import java.time.LocalDate;
@@ -141,9 +143,19 @@ public class Shift {
                 shiftsCollection.insertOne(shiftDocument);
                 return true;
             }
+            Shift latestshift = new Shift();
+            latestshift = getShiftByNumber(latestShiftId);
             if (shift.getId() == latestShiftId && result.getDouble("totalMoney") == null) {
                 // The new shift's ID is the same as the latest shift's ID, return false
-                return false;
+                Alert alert = new Alert(Alert.AlertType.ERROR, " يوجد شيفت بأسم " + latestshift.getUsername() + " من فضلك اغلق هذا الشيفت اولا ", ButtonType.OK);
+                alert.showAndWait();
+                CashierController cashierController = new CashierController();
+                cashierController.checkCloseShift();
+                latestshift = getShiftByNumber(latestShiftId);
+                if (latestshift.getTotalMoney() != null) {
+                    return true;
+                }
+                return  false;
             }
 
             // Convert Shift object to Document

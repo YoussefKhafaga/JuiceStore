@@ -410,8 +410,9 @@ public class CashierController {
         GetProductDocument getProductDocument = new GetProductDocument();
         Products products;
         String buttonText = targetButton.getText();
-        String productName = buttonText.replaceAll("[0-9]+", "").trim();
-        products = getProductDocument.retrieveProductByName(productName);
+        System.out.println(buttonText);
+        //String productName = buttonText.replaceAll("[0-9]+", "").trim();
+        products = getProductDocument.retrieveProductByName(buttonText);
         Double quantity = Double.parseDouble(showCustomInputDialog(products.getProductName()));
         ctrlPressed = false;
         paidTextField.requestFocus();
@@ -575,8 +576,9 @@ public class CashierController {
         List<Products> productsList;
         ScrollPane scrollPane;
         String buttonText = targetButton.getText();
-        String category = buttonText.replaceAll("[0-9]+", "").trim();
-        productsList = getProductDocument.retrieveProductsByCategory(category);
+        System.out.println(buttonText);
+        //String category = buttonText.replaceAll("[0-9]+", "").trim();
+        productsList = getProductDocument.retrieveProductsByCategory(buttonText);
         scrollPane = createCategoryProducts(productsList, productsList.size(), 4);
         productsScrollPane = scrollPane;
         borderpane.setCenter(productsScrollPane);
@@ -598,7 +600,7 @@ public class CashierController {
         for (int i = 0; i < numberOfCategories; i++) {
             Button button = new Button();
             button.setId("Button" + (i+1));
-            button.setText((i+1) + " " + categories.get(i));
+            button.setText(categories.get(i));
             button.setOnAction(actionEvent -> pressCategoryButton(button));
             button.setWrapText(true);
             button.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px; -fx-font-size: 14px;");
@@ -627,7 +629,7 @@ public class CashierController {
     public ScrollPane createCategoryProducts(
             List<Products> productList,
             int numberOfProducts,
-            int columns) {
+            int columns){
         Comparator<Products> nameComparator = Comparator.comparing(Products::getProductName);
         // Sort the productList using the provided comparator
         Collections.sort(productList, nameComparator);
@@ -645,7 +647,7 @@ public class CashierController {
             Button button = new Button();
             button.setId("Button" + (i + 1));
             Products product = productList.get(i);
-            button.setText((i + 1) + " " + product.getProductName());
+            button.setText(product.getProductName());
             button.setWrapText(true);
             button.setOnAction(actionEvent -> pressProductButton(button));
 
