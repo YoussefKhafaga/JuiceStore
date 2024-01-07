@@ -61,15 +61,16 @@ public class AddAdminDocument {
             Document existingAdmin = adminsCollection.find(Filters.eq("username", adminUsername)).first();
             if (existingAdmin != null) {
                 // Admin with the same username already exists
-                String storedPassword = existingAdmin.getString("password");
+                /*String storedPassword = existingAdmin.getString("password");
                 String adminSalt = existingAdmin.getString("salt");
-                String hashedAdminPassword = hashPassword(adminPassword, adminSalt);
+                String hashedAdminPassword = hashPassword(adminPassword, adminSalt);*/
+                createAlertBox("الادمن بأسم " + adminUsername + " موجود بالفعل", "تنبيه", Alert.AlertType.WARNING);
 
-                if (hashedAdminPassword.equals(storedPassword)) {
+                /*if (hashedAdminPassword.equals(storedPassword)) {
                     // Passwords match, show a message box
                     // Display a message box
                     createAlertBox("الادمن بأسم " + adminUsername + " موجود بالفعل", "تنبيه", Alert.AlertType.WARNING);
-                }
+                }*/
                 }
             else {
                 // Generate a random salt for the admin

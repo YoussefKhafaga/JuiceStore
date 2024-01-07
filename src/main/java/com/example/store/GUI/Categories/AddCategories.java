@@ -31,12 +31,23 @@ public class AddCategories {
     Button editButton;
     @FXML
     Button deleteButton;
+
+    public Button getBackButton() {
+        return BackButton;
+    }
+
+    public void setBackButton(Button backButton) {
+        BackButton = backButton;
+    }
+
     public void initialize()
     {
         populateCategories();
         AddButton.setOnAction(actionEvent -> {
             if (categoryNameTextField.getText() != "" || categoryNameTextField.getText() != null) {
                 addCategory(categoryNameTextField.getText());
+                categoryNameTextField.clear();
+                populateCategories();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("عملية ناجحة");
                 alert.setHeaderText(null);
@@ -180,6 +191,8 @@ public class AddCategories {
                     alert.setHeaderText(null);
                     alert.setContentText("تم تعديل النوع بنجاح");
                     alert.showAndWait();
+                    categoryNameTextField.clear();
+                    populateCategories();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -202,7 +215,8 @@ public class AddCategories {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("عملية ناجحة");
             alert.setHeaderText(null);
-            alert.setContentText("تم لحذف بنجاح");
+            alert.setContentText("تم الحذف بنجاح");
+            populateCategories();
 
             alert.showAndWait();
         } catch (Exception e) {

@@ -336,7 +336,7 @@ public class MenuController {
             // Create a TextInputDialog with both username and password fields
             Dialog<Pair<String, String>> dialog1 = new Dialog<>();
             dialog1.setTitle("فتح شيفت جديد");
-            dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور للعامل");
+            dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور للموظف");
 
             // Set the button types
             ButtonType loginButtonType1 = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);

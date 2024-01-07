@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="borderpane" maxHeight="700.0" prefHeight="693.0" prefWidth="1366.0" stylesheets="@../../../../../styles.CSS" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Cashier.CashierController">
    <right>
-      <VBox alignment="CENTER" prefHeight="674.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="674.0" prefWidth="174.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
@@ -32,30 +32,32 @@
                   <Font size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
+            <Button fx:id="categoriesButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="الاصناف" />
+            <Button fx:id="productsButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="المنتجات" />
             <ImageView fitHeight="283.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../logo2.jpg" />
                </image>
                <VBox.margin>
-                  <Insets top="80.0" />
+                  <Insets />
                </VBox.margin>
             </ImageView>
             <TextField fx:id="shadowTextField" prefHeight="25.0" prefWidth="15.0">
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets />
                </VBox.margin>
             </TextField>
-            <Button fx:id="enterNumber" mnemonicParsing="false" text="ادخال رقم الصنف">
+            <Button fx:id="enterNumber" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="ادخال رقم الصنف">
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
             <Button fx:id="BackButton" mnemonicParsing="false" text="الرجوع للاصناف">
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets />
                </VBox.margin>
                <font>
                   <Font size="14.0" />

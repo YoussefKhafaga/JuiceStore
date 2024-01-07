@@ -193,7 +193,7 @@ public class HelloController {
             if (helloController.validateLogin(username, password)) {
                 // Create a TextInputDialog with both username and password fields
                 Dialog<Pair<String, String>> dialog1 = new Dialog<>();
-                dialog1.setTitle("تسجيل عامل جديد");
+                dialog1.setTitle("تسجيل موظف جديد");
                 dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور");
 
                 // Set the button types
@@ -245,11 +245,11 @@ public class HelloController {
                     //add worker
                     Workers workers = new Workers(username1, password1);
                     if (workers.addWorker(username1, password1)) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم تسجيل العامل بنجاح", ButtonType.OK);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "تم تسجيل الموظف بنجاح", ButtonType.OK);
                         alert.showAndWait();
                     }
                     else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "لم يتم تسجيل العامل بنجاح", ButtonType.OK);
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "لم يتم تسجيل الموظف بنجاح", ButtonType.OK);
                         alert.showAndWait();
                     }
                 });

@@ -31,6 +31,14 @@ public class AddItemsController {
     @FXML
     private ComboBox<String> itemCategory;
 
+    public Button getBackButton() {
+        return backButton;
+    }
+
+    public void setBackButton(Button backButton) {
+        this.backButton = backButton;
+    }
+
     public void initialize(){
         AddCategories addCategories = new AddCategories();
         List<String> categories;

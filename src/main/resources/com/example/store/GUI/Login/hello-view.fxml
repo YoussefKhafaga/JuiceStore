@@ -34,7 +34,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="AddWorker" mnemonicParsing="false" prefHeight="31.0" prefWidth="183.0" text="اضافة عامل" textFill="RED">
+                  <Button fx:id="AddWorker" mnemonicParsing="false" prefHeight="31.0" prefWidth="183.0" text="اضافة موظف كاشير" textFill="RED">
                      <font>
                         <Font size="15.0" />
                      </font>

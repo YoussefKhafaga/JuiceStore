@@ -1,8 +1,10 @@
 package com.example.store.GUI.Cashier;
 
 import com.example.store.Admin.AddAdminDocument;
+import com.example.store.GUI.AddItems.AddItemsController;
 import com.example.store.GUI.Login.HelloController;
 import com.example.store.GUI.Menu.MenuController;
+import com.example.store.Product.AddProductDocument;
 import com.example.store.Shift;
 import com.example.store.Workers;
 import com.sun.javafx.print.PrintHelper;
@@ -12,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.print.*;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -101,12 +104,22 @@ public class CashierController {
     private Double DeliveryValue = null;
     @FXML
     public Label shiftNumber;
+    @FXML
+    public Button categoriesButton;
+    @FXML
+    public Button productsButton;
 
     public void initialize() {
         DeliveryName = null;
         DeliveryValue = null;
         Shift shift = new Shift();
         shiftNumber.setText(String.valueOf(shift.getLatestShiftId()));
+        categoriesButton.setOnAction(actionEvent -> {
+            getCategoriesView();
+        });
+        productsButton.setOnAction(actionEvent -> {
+            getProductsView();
+        });
         Delivery.setOnAction(actionEvent -> {
             handleDelivery();
         });
@@ -909,7 +922,7 @@ public class CashierController {
             // Create a TextInputDialog with both username and password fields
             Dialog<Pair<String, String>> dialog1 = new Dialog<>();
             dialog1.setTitle("غلق شيفت");
-            dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور للعامل");
+            dialog1.setHeaderText("من فضلك ادخل اسم المستخدم وكلمة المرور للموظف");
 
             // Set the button types
             ButtonType loginButtonType1 = new ButtonType("تسجيل الدخول", ButtonBar.ButtonData.OK_DONE);
@@ -1133,6 +1146,62 @@ public class CashierController {
 
         }
     }
+    public  void getCategoriesView(){
+            try {
+                // Load the FXML file for the second view
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/Categories/Categories.fxml"));
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add("/styles.css");
 
+                // Create a new stage
+                Stage categoriesStage = new Stage();
+                categoriesStage.setScene(scene);
+                categoriesStage.setTitle("Categories");
+                categoriesStage.setResizable(false);
+                // Get the controller associated with the FXML file
+                AddCategories addCategories = loader.getController();
+
+                // Now you can access the button or other elements in the FXML file through the controller
+                Button categoriesbackbutton = addCategories.getBackButton();
+                categoriesbackbutton.setVisible(false);
+                // Show the new stage
+                categoriesStage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
+        }
+
+    public void getProductsView()
+    {
+        try {
+            // Load the FXML file for the second view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/store/GUI/AddItems/add-items.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add("/styles.css");
+
+            // Get the current stage
+            Stage currentStage = new Stage();
+
+            // Set the new scene on the current stage
+            currentStage.setScene(scene);
+            currentStage.setTitle("اضافة منتجات");
+            currentStage.setResizable(false);
+            //currentStage.setMaximized(true);
+            currentStage.centerOnScreen();
+            currentStage.setOnCloseRequest(null);
+            // Get the controller associated with the FXML file
+            AddItemsController addItemsController = loader.getController();
+
+            // Now you can access the button or other elements in the FXML file through the controller
+            Button categoriesbackbutton = addItemsController.getBackButton();
+            categoriesbackbutton.setVisible(false);
+            currentStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
 
 }

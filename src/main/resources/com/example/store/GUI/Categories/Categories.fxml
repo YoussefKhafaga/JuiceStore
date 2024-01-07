@@ -7,41 +7,6 @@
 
 <AnchorPane fx:id="anchorpane" prefHeight="700.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.store.GUI.Categories.AddCategories">
    <children>
-      <VBox alignment="CENTER" prefHeight="332.0" prefWidth="683.0" spacing="40.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="اضافة نوع جديد" textAlignment="CENTER" textFill="RED">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <padding>
-                        <Insets left="100.0" top="20.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="206.0" prefWidth="683.0" spacing="20.0">
-               <children>
-                  <TextField fx:id="categoryNameTextField">
-                     <HBox.margin>
-                        <Insets top="100.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Label text="اسم النوع الجديد">
-                     <HBox.margin>
-                        <Insets top="100.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <Button fx:id="AddButton" mnemonicParsing="false" text="اضف النوع">
-               <VBox.margin>
-                  <Insets left="120.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-      </VBox>
       <VBox alignment="CENTER" layoutX="683.0" prefHeight="396.0" prefWidth="683.0" spacing="40.0">
          <children>
             <Label text="تعديل او الغاء النوع" textFill="RED">
@@ -96,6 +61,41 @@
                   </Button>
                </children>
             </HBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="332.0" prefWidth="683.0" spacing="40.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="اضافة نوع جديد" textAlignment="CENTER" textFill="RED">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets left="100.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="206.0" prefWidth="683.0" spacing="20.0">
+               <children>
+                  <TextField fx:id="categoryNameTextField">
+                     <HBox.margin>
+                        <Insets top="100.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="اسم النوع الجديد">
+                     <HBox.margin>
+                        <Insets top="100.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Button fx:id="AddButton" mnemonicParsing="false" text="اضف تصنيف جديد">
+               <VBox.margin>
+                  <Insets left="120.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
       <HBox alignment="CENTER" layoutX="-1.0" layoutY="396.0" prefHeight="100.0" prefWidth="1366.0">

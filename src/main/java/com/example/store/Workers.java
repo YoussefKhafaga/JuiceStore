@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import javafx.scene.control.Alert;
 import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
@@ -37,7 +38,7 @@ public class Workers {
 
             if (existingAdmin != null) {
                 // Admin with the same username already exists, handle accordingly
-                System.out.println("العامل بأسم " + username + " موجود بالفعل ");
+                createAlertBox("الموظف بأسم " + existingAdmin.getString("username") + " موجود بالفعل", "تنبيه", Alert.AlertType.WARNING);
             } else {
                 // Generate a random salt for the admin
                 String userSalt = generateSalt();
@@ -52,8 +53,6 @@ public class Workers {
                         .append("salt", userSalt);
 
                 adminsCollection.insertOne(newAdminDocument);
-
-                System.out.println("Admin document added successfully!");
                 return true;
             }
 
@@ -63,6 +62,13 @@ public class Workers {
         return false;
     }
 
+    public void createAlertBox(String msg, String type, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(type);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
     public boolean authenticateWorker(String username, String password) {
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
             // Specify the database

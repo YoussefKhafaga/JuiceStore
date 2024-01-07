@@ -106,7 +106,7 @@
                       <TableColumn fx:id="EndTime" prefWidth="280.0" text="توقيت الانتهاء" />
                         <TableColumn fx:id="StartTime" prefWidth="221.0" text="توقيت البدأ" />
                         <TableColumn fx:id="ShiftNumber" minWidth="0.0" prefWidth="63.0" text="رقم الوردية" />
-                        <TableColumn fx:id="WorkerName" prefWidth="291.0" text="اسم العامل" />
+                        <TableColumn fx:id="WorkerName" prefWidth="216.0" text="اسم موظف الكاشير" />
                     </columns>
                   </TableView>
                </children></HBox>
