@@ -124,6 +124,8 @@ public class CashierController {
             handleDelivery();
         });
         Delivery.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+        categoriesButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
+        productsButton.setStyle("-fx-background-color: lightblue; -fx-background-radius: 12px;");
         /*Purchases.setOnAction(actionEvent -> {
             handlePurchasesView();
         });*/
